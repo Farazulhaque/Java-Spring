@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AIM Educational Trust</title>
+	<script src="script.js"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<header class="header">
+		<div class="left">
+			<p>&emsp;&emsp;&emsp;AIM</p>
+			<p>Educational Trust</p>
+		</div>
+		<div class="right">
+			<h1>AIM Educational Trust</h1>
+			<p>Lorem ipsum dolor sit amet.</p>
+			<div class="right">
+				<!-- <p><a href="#">Login</a></p> -->
+				<p>User Name: Md Farazul Haque</p>
+				<p id="current-date"></p>
+			</div>
+		</div>
+	</header>
+	<main>
+		<h2>Donation Reciept Form</h2>
+		<p style="color: rgb(34, 34, 34);">Fill the form to generate reciept.</p>
+		<br>
+		<section class="form">
+			<form action="get">
+				<fieldset>
+					<legend>Donor's Information</legend>
+					<label for="dname">Enter Donor Name:</label>
+					<input type="text" name="dname" id="dname" pattern="[a-zA-Z]">
+
+					<br>
+					<label for="dmobileno">Enter Donor Mobile No.:</label>
+					<input type="text" name="dmobileno" id="dmobileno" pattern="[0-9]{10}" placeholder="9876543210">
+
+					<br>
+					<label for="demail">Enter Donor Email-Id:</label>
+					<input type="email" name="demail" id="demail">
+
+					<br>
+					<label for="daddresss">Enter Donor Address:</label>
+					<textarea name="daddresss" id="daddresss" cols="20" rows="5"></textarea>
+				</fieldset>
+				<br>
+				<br>
+				<fieldset>
+					<legend>Donation's Information</legend>
+					<label for="dtype">Enter Donation Type:</label>
+					<input type="text" name="dtype" id="dtype">
+
+					<br>
+					<label for="damount">Enter Donation Amount.:</label>
+					<input type="text" name="damount" id="damount" pattern="[0-9]" placeholder="9999">
+
+					<br>
+					<label for="dinfo">Additional Information:</label>
+					<textarea name="dinfo" id="dinfo" cols="20" rows="5"></textarea>
+				</fieldset>
+				<br><br>
+				<div class="submit">
+					<input type="submit" class="submit-btn">
+				</div>
+			</form>
+		</section>
+	</main>
+</body>
+
+</html>
