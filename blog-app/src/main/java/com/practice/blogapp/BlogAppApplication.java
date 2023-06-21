@@ -1,13 +1,13 @@
-package com.practice.blog;
+package com.practice.blogapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BlogAppApisApplication {
+public class BlogAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BlogAppApisApplication.class, args);
+		SpringApplication.run(BlogAppApplication.class, args);
 	}
 
 }
