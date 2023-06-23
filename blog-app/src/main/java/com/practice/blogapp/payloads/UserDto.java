@@ -3,7 +3,6 @@ package com.practice.blogapp.payloads;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import lombok.Getter;
@@ -18,10 +17,10 @@ public class UserDto {
     private int id;
 
     @NotEmpty
-    @Size(min = 5, message = "Username is not Valid")
+    @Size(min = 5, message = "Username is not Valid!!!")
     private String name;
 
-    @Email(message = "Email Address is not Valid")
+    @Email(message = "Email Address is not Valid!!!")
     @NotNull
     private String email;
 
