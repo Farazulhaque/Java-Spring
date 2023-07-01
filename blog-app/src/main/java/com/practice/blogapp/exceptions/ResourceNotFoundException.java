@@ -1,10 +1,11 @@
 package com.practice.blogapp.exceptions;
 
-public class ResourceNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException {
 
     String resourceName;
     String fieldName;
     long fieldValue;
+
     /**
      * @param resourceName
      * @param fieldName

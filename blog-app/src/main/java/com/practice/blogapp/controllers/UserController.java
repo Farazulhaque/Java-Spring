@@ -24,30 +24,29 @@ import com.practice.blogapp.services.UserService;
 @RequestMapping("/api/users")
 public class UserController {
 
-    
     @Autowired
     private UserService userService;
-    
+
     // POST - create user
     @PostMapping("/")
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        
+
         UserDto createUserDto = userService.createUser(userDto);
         return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
     }
-    
+
     // PUT - update user
     @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable("userId") Integer uId) {
-        
+
         UserDto updatedUser = userService.updateUser(userDto, uId);
         return ResponseEntity.ok(updatedUser);
     }
-    
+
     // DELETE - delete user
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Integer uid) {
-        
+
         userService.deleteUser(uid);
         return new ResponseEntity<ApiResponse>(new ApiResponse("User Deleted Successfully", true), HttpStatus.OK);
     }
@@ -57,7 +56,7 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
-    
+
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getSingleUser(@PathVariable Integer userId) {
         return ResponseEntity.ok(userService.getUserById(userId));
