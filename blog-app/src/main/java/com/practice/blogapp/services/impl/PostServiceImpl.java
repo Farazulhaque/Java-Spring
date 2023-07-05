@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.practice.blogapp.entities.Category;
@@ -57,27 +60,48 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto updatePost(PostDto postDto, Integer postid) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePost'");
+    public PostDto updatePost(PostDto postDto, Integer postId) {
+        Post updatedPost = postRepo.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
+
+        // updatedPost.setCategory(modelMapper.map(postDto.getCategory(), Category.class));
+        // updatedPost.setUser(modelMapper.map(postDto.getUser(), User.class));
+        // updatedPost.setAddedDate(postDto.getAddedDate());
+        updatedPost.setContent(postDto.getContent());
+        // updatedPost.setImageName(postDto.getImageName());
+        // updatedPost.setPostId(postDto.getPostId());
+        updatedPost.setTitle(postDto.getTitle());
+
+        postRepo.save(updatedPost);
+
+        return modelMapper.map(updatedPost, PostDto.class);
+
     }
 
     @Override
     public void deletePost(Integer postId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deletePost'");
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "Post Id", postId));
+        postRepo.delete(post);
     }
 
     @Override
-    public List<PostDto> getAllPost() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllPost'");
+    public List<PostDto> getAllPost(Integer pageNo, Integer pageSize) {
+
+        Pageable p = PageRequest.of(pageNo, pageSize);
+        Page<Post> pagePosts = postRepo.findAll(p);
+        List<Post> allPosts = pagePosts.getContent();
+
+        List<PostDto> postDtos = allPosts.stream().map((post) -> modelMapper.map(post, PostDto.class))
+                .collect(Collectors.toList());
+        return postDtos;
     }
 
     @Override
     public PostDto getPostById(Integer postId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPostById'");
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "Post Id", postId));
+        return modelMapper.map(post, PostDto.class);
     }
 
     @Override
@@ -96,15 +120,10 @@ public class PostServiceImpl implements PostService {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         List<Post> posts = postRepo.findByUser(user);
-        for (Post post : posts) {
-            System.out.println(post);
-        }
+
         List<PostDto> postDtos = posts.stream().map((post) -> modelMapper.map(post, PostDto.class))
                 .collect(Collectors.toList());
 
-        for (PostDto post : postDtos) {
-            System.out.println(post);
-        }
         return postDtos;
     }
 

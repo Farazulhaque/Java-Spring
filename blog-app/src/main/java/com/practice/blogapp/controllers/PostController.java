@@ -5,13 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.practice.blogapp.payloads.ApiResponse;
 import com.practice.blogapp.payloads.PostDto;
 import com.practice.blogapp.services.PostService;
 
@@ -45,4 +49,39 @@ public class PostController {
 
         return new ResponseEntity<List<PostDto>>(postDtos, HttpStatus.OK);
     }
+
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable Integer postId) {
+
+        PostDto postDtos = postService.getPostById(postId);
+
+        return new ResponseEntity<PostDto>(postDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<PostDto>> getAllPosts(
+            @RequestParam(value = "pageNumber", defaultValue  = "1", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+
+        List<PostDto> postDtos = postService.getAllPost(pageNumber, pageSize);
+
+        return new ResponseEntity<List<PostDto>>(postDtos, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/post/{postId}")
+    public ResponseEntity<ApiResponse> deletePostById(@PathVariable Integer postId) {
+
+        postService.deletePost(postId);
+
+        return new ResponseEntity<ApiResponse>(new ApiResponse("Post Deleted Successfully", true), HttpStatus.OK);
+    }
+
+    @PutMapping("/post/{postId}")
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,
+            @PathVariable Integer postId) {
+        PostDto updatedPost = postService.updatePost(postDto, postId);
+
+        return new ResponseEntity<PostDto>(updatedPost, HttpStatus.OK);
+    }
+
 }
