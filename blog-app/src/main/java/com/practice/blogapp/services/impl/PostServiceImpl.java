@@ -8,7 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.practice.blogapp.entities.Category;
@@ -16,6 +16,7 @@ import com.practice.blogapp.entities.Post;
 import com.practice.blogapp.entities.User;
 import com.practice.blogapp.exceptions.ResourceNotFoundException;
 import com.practice.blogapp.payloads.PostDto;
+import com.practice.blogapp.payloads.PostResponse;
 import com.practice.blogapp.repositories.CategoryRepo;
 import com.practice.blogapp.repositories.PostRepo;
 import com.practice.blogapp.repositories.UserRepo;
@@ -64,7 +65,8 @@ public class PostServiceImpl implements PostService {
         Post updatedPost = postRepo.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
 
-        // updatedPost.setCategory(modelMapper.map(postDto.getCategory(), Category.class));
+        // updatedPost.setCategory(modelMapper.map(postDto.getCategory(),
+        // Category.class));
         // updatedPost.setUser(modelMapper.map(postDto.getUser(), User.class));
         // updatedPost.setAddedDate(postDto.getAddedDate());
         updatedPost.setContent(postDto.getContent());
@@ -86,15 +88,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPost(Integer pageNo, Integer pageSize) {
+    public PostResponse getAllPost(Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
 
-        Pageable p = PageRequest.of(pageNo, pageSize);
+        Sort sort = (sortDirection.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // if (sortDirection.equalsIgnoreCase("asc")) {
+        // sort = Sort.by(sortBy).ascending();
+        // } else {
+        // sort = Sort.by(sortBy).descending();
+        // }
+        org.springframework.data.domain.Pageable p = PageRequest.of(pageNo, pageSize, sort);
         Page<Post> pagePosts = postRepo.findAll(p);
         List<Post> allPosts = pagePosts.getContent();
 
         List<PostDto> postDtos = allPosts.stream().map((post) -> modelMapper.map(post, PostDto.class))
                 .collect(Collectors.toList());
-        return postDtos;
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDtos);
+        postResponse.setPageNumber(pagePosts.getNumber());
+        postResponse.setPageSize(pagePosts.getSize());
+        postResponse.setTotalElements(pagePosts.getTotalElements());
+        postResponse.setTotalPages(pagePosts.getTotalPages());
+        postResponse.setLastPage(pagePosts.isLast());
+
+        return postResponse;
     }
 
     @Override

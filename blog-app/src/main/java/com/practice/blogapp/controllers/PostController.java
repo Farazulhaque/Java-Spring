@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.blogapp.payloads.ApiResponse;
 import com.practice.blogapp.payloads.PostDto;
+import com.practice.blogapp.payloads.PostResponse;
 import com.practice.blogapp.services.PostService;
 
 @RestController
@@ -59,13 +60,16 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPosts(
-            @RequestParam(value = "pageNumber", defaultValue  = "1", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize) {
+    public ResponseEntity<PostResponse> getAllPosts(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(value="sortBy", defaultValue = "postId", required = false) String sortBy,
+            @RequestParam(value="sortDirection", defaultValue = "asc", required = false) String sortDirection
+            ) {
 
-        List<PostDto> postDtos = postService.getAllPost(pageNumber, pageSize);
+        PostResponse postResponse = postService.getAllPost(pageNumber, pageSize, sortBy, sortDirection);
 
-        return new ResponseEntity<List<PostDto>>(postDtos, HttpStatus.OK);
+        return new ResponseEntity<PostResponse>(postResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/post/{postId}")
