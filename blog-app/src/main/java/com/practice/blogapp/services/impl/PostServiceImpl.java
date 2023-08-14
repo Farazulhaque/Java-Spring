@@ -65,13 +65,13 @@ public class PostServiceImpl implements PostService {
 		Post updatedPost = postRepo.findById(postId)
 				.orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
 
-		// updatedPost.setCategory(modelMapper.map(postDto.getCategory(),
-		// Category.class));
-		// updatedPost.setUser(modelMapper.map(postDto.getUser(), User.class));
-		// updatedPost.setAddedDate(postDto.getAddedDate());
+		updatedPost.setCategory(modelMapper.map(postDto.getCategory(),
+				Category.class));
+		updatedPost.setUser(modelMapper.map(postDto.getUser(), User.class));
+		updatedPost.setAddedDate(postDto.getAddedDate());
 		updatedPost.setContent(postDto.getContent());
-		// updatedPost.setImageName(postDto.getImageName());
-		// updatedPost.setPostId(postDto.getPostId());
+		updatedPost.setImageName(postDto.getImageName());
+		updatedPost.setPostId(postDto.getPostId());
 		updatedPost.setTitle(postDto.getTitle());
 
 		postRepo.save(updatedPost);
