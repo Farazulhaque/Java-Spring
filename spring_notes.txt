@@ -1,0 +1,95 @@
+What is spring?
+Dependency Injection framework to make java application loosely coupled.
+makes it easy to develop javaEE application
+
+What is Dependency Injection?
+It is Design pattern. 
+It makes our application loosely coupled.
+
+Inversion Of Control?
+It creates the object in runtime and provide the object using Dependency Injection.
+
+Spring Modules?
+- Spring Core - Core, Beans, Context, spEL -> provides DI, IOC -> Dependency to add spring-core, spring-context
+- AOP
+- Data Access/ Integration - JDBC, ORM, JMS, OXM -> we can use hibernate or jpa using ORM
+- Spring Web - Web, Servlet
+
+Spring IOC Container?
+Responsible for object creation, hold object in memory, inject one object inside another object.
+Responsible for lifecycle of object from creation to destruction.
+Using Beans and xml Configuration file.
+
+ApplicationContext extends BeanFactory - Interface that represents IOC Container
+ClasspathXMLApplicationContext - search for the xml Configuration in the java classpath -- MOST USED
+AnnotationConfigApplicationContext - search for bean where we have used annotation
+
+Beans - Java Class that we provide to xml file to create object of class and follow lifecycle of object creation to destruction
+
+Dependency Injection can be done in two ways--
+Setter Injection
+Constructor Injection
+
+Data Types that supports Dependency Injection
+- Primitive Data Types
+- Collection Types - List, Set, Map and Properties
+- Reference Data Types - Other class object
+
+How to inject Dependency Injection?
+Using property file xml 
+<beans><bean class="com.example.Student" name="st1"> <property name="studentId"><value>Faraz</value></property></bean></beans>
+
+Lifecycle of Spring Bean-
+public void init() - initialisation code, config, connecting db
+public void destroy() - cleanup code
+
+Create object, instatiate object, call init(), read and use the bean, call destroy()
+
+Autowiring - 
+Spring container inject the dependency automatically.
+Using @Autowired annotation
+
+@Qualifier Annotation - 
+It is used to specify the name of the bean that we want to use.
+
+@Component Annotation - 
+Spring will create the object of that particular class automatically. We can provide name of the bean in @Component("Name")
+
+@Value Annotation - 
+Populate the property value on spring startup.
+
+Spring Beaan Scope - 
+Singleton - Default - Only one object has been created by spring and we use that object anytime we want to use the object
+Prototype - Everytime new object has been created whenever we call
+request 
+session
+globalsession
+
+@Scaope annotation used with only @Component annotation -> Define scope of bean @Scope("prototype")
+
+@Configuration -> To handle the configuration using java
+@ComponentScan -> provide basePackages so that spring will scan that package and create the bean of any class that have @Component / @Bean annotation.
+
+@Bean -> The object is provided to IOC container to use in future.
+
+If using @Bean annotation then we dont have to use @ComponentScan
+
+======================================================================
+
+Spring JDBC
+-----------
+We can connect with database and execute query using spring jdbc.
+
+It provides JdbcTemplate to perform all the important operation using methods provided by the class.
+
+
+
+Spring ORM (Object Relational Mapping)
+--------------------------------------
+HibernateTemplate class - save(), update(), insert(), get(), loadAll() -> SessionFactory -> LocalSessionFactory -> DataSource
+
+
+
+
+@Entity 
+@Table -> Treat the class as database Table
