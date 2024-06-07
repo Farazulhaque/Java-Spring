@@ -1,0 +1,171 @@
+====================
+WHAT IS SPRING BOOT?
+====================
+
+Spring Boot is a Java framework that makes it easier to create and run Java applications.
+
+Spring Boot is an open-source Java-based framework used to create stand-alone, production-grade Spring-based applications. It is designed to simplify the development of new Spring applications by providing defaults for configuration and a variety of out-of-the-box functionalities that speed up the development process.
+
+### Key Features of Spring Boot
+
+1. **Auto-Configuration**:
+   - Spring Boot can automatically configure your application based on the dependencies you have added to the project. For example, if you include the `spring-boot-starter-web` dependency, Spring Boot will automatically configure a web application with Tomcat and Spring MVC.
+
+2. **Standalone Applications**:
+   - Spring Boot applications can be run as standalone applications from the command line using `java -jar`. They come with an embedded web server (such as Tomcat, Jetty, or Undertow), so you don’t need to deploy them to an external server.
+
+3. **Production-Ready Features**:
+   - Spring Boot includes features like metrics, health checks, and externalized configuration to help you build and run your applications in production environments.
+
+4. **Opinionated Defaults**:
+   - Spring Boot follows an opinionated approach to configuration, providing sensible defaults to reduce the need for manual setup. This helps developers get started quickly.
+
+5. **Spring Boot Starters**:
+   - Starters are a set of convenient dependency descriptors you can include in your application. For example, the `spring-boot-starter-data-jpa` starter includes dependencies for Spring Data JPA, Hibernate, and the H2 database.
+
+6. **Spring Boot CLI**:
+   - The Spring Boot CLI (Command Line Interface) allows you to run and test Spring Boot applications from the command line. It can be used to quickly prototype with Groovy scripts.
+
+### Benefits of Using Spring Boot
+
+- **Reduced Boilerplate Code**: Spring Boot reduces the amount of boilerplate code required to set up a Spring application.
+- **Rapid Development**: The framework’s auto-configuration and starter dependencies help you get started quickly.
+- **Microservices Architecture**: Spring Boot is commonly used to develop microservices due to its simplicity and ease of deployment.
+- **Embedded Servers**: No need to install or configure an external server; you can run your application with embedded servers like Tomcat, Jetty, or Undertow.
+- **Ecosystem Integration**: Seamless integration with the Spring ecosystem and other popular libraries and tools.
+
+
+
+============================
+WHY SPRING BOOT OVER SPRING?
+============================
+
+Spring Boot offers several advantages over the traditional Spring framework, particularly in terms of simplifying and accelerating the development process. Here are the key reasons why developers often choose Spring Boot over Spring:
+
+### 1. **Auto-Configuration**
+
+**Spring Boot**:
+- Spring Boot can automatically configure many aspects of your application based on the dependencies included in your project.
+- Reduces the need for extensive XML or Java-based configuration, allowing you to get started quickly with minimal setup.
+
+**Traditional Spring**:
+- Requires explicit configuration using XML files or Java classes with `@Configuration` annotations.
+- More setup and boilerplate code are required to get a basic application running.
+
+### 2. **Embedded Servers**
+
+**Spring Boot**:
+- Comes with embedded servers like Tomcat, Jetty, and Undertow.
+- Allows you to run applications as standalone jar files using `java -jar`, eliminating the need to deploy to an external application server.
+
+**Traditional Spring**:
+- Typically requires deployment to an external application server like Tomcat or Jetty.
+- Additional steps are needed to package and deploy the application.
+
+### 3. **Starter Dependencies**
+
+**Spring Boot**:
+- Provides starter dependencies (`spring-boot-starter-*`) that aggregate commonly used libraries and frameworks, simplifying dependency management.
+- Reduces the need to manually specify versions and compatibility of various dependencies.
+
+**Traditional Spring**:
+- Requires manual management of dependencies, including version compatibility.
+- Developers need to add and configure each dependency individually.
+
+### 4. **Production-Ready Features**
+
+**Spring Boot**:
+- Includes built-in support for monitoring, metrics, health checks, and externalized configuration.
+- Provides production-ready features with minimal setup, making it easier to manage and monitor applications in production environments.
+
+**Traditional Spring**:
+- Requires additional libraries and configuration to achieve the same level of monitoring and management.
+- More manual effort is needed to set up production-ready features.
+
+### 5. **Spring Boot CLI**
+
+**Spring Boot**:
+- Offers a Command Line Interface (CLI) that allows you to run and test Spring Boot applications using Groovy scripts.
+- Facilitates rapid prototyping and development without the need for a full-fledged Java IDE.
+
+**Traditional Spring**:
+- Does not have a dedicated CLI for rapid application development.
+- Typically requires a full development environment setup.
+
+### 6. **Simplified Deployment**
+
+**Spring Boot**:
+- Simplifies deployment with its embedded servers and single executable JAR/WAR files.
+- Supports Docker and cloud-native deployments out-of-the-box, making it easier to containerize and deploy applications in modern cloud environments.
+
+**Traditional Spring**:
+- Often involves more complex deployment processes, including packaging and configuring external servers.
+- Requires additional setup for containerization and cloud deployments.
+
+### 7. **Microservices Architecture**
+
+**Spring Boot**:
+- Well-suited for building microservices due to its lightweight nature, ease of configuration, and built-in support for RESTful services.
+- Integrates seamlessly with Spring Cloud, which provides tools for building robust microservices architectures.
+
+**Traditional Spring**:
+- Can be used for microservices, but requires more manual configuration and setup.
+- Lacks the streamlined approach provided by Spring Boot for quickly setting up and managing microservices.
+
+### Conclusion
+
+Spring Boot is preferred over traditional Spring for its ability to simplify development, configuration, and deployment processes. It reduces boilerplate code, provides sensible defaults, and offers a comprehensive set of tools and features that streamline the creation of production-ready applications. This makes Spring Boot an excellent choice for modern application development, particularly when speed and simplicity are critical.
+
+
+
+============================
+WORKING OF SPRING BOOT?
+============================
+
+Spring Boot starts by scanning the starter dependency in pom.xml
+Then download and auto-configure the module included in pom.xml
+
+
+
+============================
+HOW SPRING BOOT STARTS?
+============================
+
+Starts by calling main() method of your main class.
+The run() method of ApringApplication is called. This method starts the application by creating an application context and initializing it.
+Once the application context is initialises, the run() method starts the application's embedded web server.
+
+
+
+============================
+TOP SPRING BOOT ANNOTATIONS
+============================
+@SpringBootApplication: It combines three annotations: 
+@Configuration: ,
+-> Indicates that the class can be used by the Spring IoC container as a source of bean definitions
+-> When you annotate a class with @Configuration, it tells Spring that this class contains one or more methods annotated with @Bean which should be invoked to instantiate and configure new objects (beans) managed by the Spring IoC (Inversion of Control) container.
+-> This is particularly useful for defining beans in a centralized way, especially for beans that are complex or need specific construction logic.
+
+@EnableAutoConfiguration: 
+-> Tells Spring Boot to start adding beans based on classpath settings, other beans, and various property settings
+-> It simplifies Spring configuration by automatically configuring beans that are likely needed based on the libraries present in the project.
+-> For example, if you have the spring-boot-starter-web dependency in your project, @EnableAutoConfiguration will configure necessary beans for a web application, like a DispatcherServlet, a ViewResolver, and more.
+-> It reduces the need for explicit bean configuration in many common cases.
+
+@ComponentScan: 
+-> Tells Spring to look for other components, configurations, and services in the specified package
+-> By default, @ComponentScan scans the package of the class that declares this annotation.
+-> You can specify base packages to scan by providing the basePackages attribute.
+
+@Component: 
+-> The @Component annotation is used to mark a Java class as a Spring component. Spring will automatically detect these classes through classpath scanning and register them as beans in the application context.
+-> It is a generic stereotype for any Spring-managed component. You can use it to annotate classes that perform a variety of tasks in your application, and Spring will recognize and manage these classes as beans.
+
+@Autowired: 
+-> The @Autowired annotation in Spring Boot is used to automatically inject dependencies into a Spring-managed bean. This feature is a core part of the Spring Framework's Dependency Injection (DI) and Inversion of Control (IoC) mechanisms. Below is a detailed explanation of @Autowired in the context of Spring Boot, along with an example.
+-> By using this annotation, you let Spring manage the lifecycle and dependency graph of your beans, promoting loose coupling and enhancing testability.
+
+@Service: 
+-> The @Service annotation in Spring Boot is used to indicate that a class is a "service" class, which typically contains business logic. It is a specialization of the @Component annotation, which means that the class annotated with @Service is also a Spring bean and will be automatically detected through classpath scanning.
+
+@RestController: 
