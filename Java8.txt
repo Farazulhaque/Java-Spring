@@ -1,0 +1,215 @@
+Both abstract classes and interfaces are used to achieve abstraction in object-oriented programming, but they have some key differences. Here's a comparison:
+
+### Abstract Class
+
+1. **Definition**:
+   - An abstract class is a class that cannot be instantiated and is meant to be subclassed. It can contain abstract methods (methods without a body) and concrete methods (methods with a body).
+
+2. **Methods**:
+   - Can have both abstract methods (which must be implemented by subclasses) and concrete methods.
+   - Subclasses are required to implement the abstract methods, but they can also override concrete methods if needed.
+
+3. **Fields**:
+   - Can have fields (attributes) with implementations.
+   - Can have static and non-static fields.
+
+4. **Constructor**:
+   - Can have constructors which can be called when an instance of a subclass is created.
+
+5. **Inheritance**:
+   - Supports single inheritance. A subclass can inherit from only one abstract class but can implement multiple interfaces.
+
+6. **Access Modifiers**:
+   - Can have access modifiers for methods and fields, such as `public`, `protected`, and `private`.
+
+### Interface
+
+1. **Definition**:
+   - An interface is a reference type in Java, similar to a class, that can contain only constants, method signatures, default methods (with a body), static methods, and nested types. Interfaces cannot contain instance fields.
+
+2. **Methods**:
+   - By default, all methods in an interface are abstract (except static and default methods). Starting from Java 8, interfaces can have default methods and static methods with implementations.
+   - All methods in an interface are implicitly `public`.
+
+3. **Fields**:
+   - Can only have static final fields (constants).
+   - All fields in an interface are implicitly `public`, `static`, and `final`.
+
+4. **Constructor**:
+   - Cannot have constructors since interfaces cannot be instantiated.
+
+5. **Inheritance**:
+   - Supports multiple inheritance. A class can implement multiple interfaces, allowing it to inherit the abstract methods from multiple sources.
+
+6. **Access Modifiers**:
+   - Methods and fields are implicitly `public`. Methods in interfaces cannot have any other access modifier.
+
+### Use Cases
+
+- **Abstract Class**: Use when you have a base class that should not be instantiated on its own and when you need to share code among closely related classes. It is a good choice when you have common functionality to be shared across subclasses.
+  
+- **Interface**: Use when you want to define a contract for classes to implement, regardless of where those classes are in the inheritance hierarchy. It is useful for defining capabilities that can be shared across different classes that do not necessarily share a common ancestor.
+
+### Example
+
+**Abstract Class**:
+```java
+abstract class Animal {
+    String name;
+    
+    Animal(String name) {
+        this.name = name;
+    }
+    
+    abstract void makeSound();
+    
+    void sleep() {
+        System.out.println("Sleeping");
+    }
+}
+
+class Dog extends Animal {
+    Dog(String name) {
+        super(name);
+    }
+    
+    void makeSound() {
+        System.out.println("Bark");
+    }
+}
+```
+
+**Interface**:
+```java
+interface Animal {
+    void makeSound();
+    void sleep();
+}
+
+class Dog implements Animal {
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+    
+    public void sleep() {
+        System.out.println("Sleeping");
+    }
+}
+```
+
+In summary, use an abstract class when you need to provide a common base class for a group of related classes and share code among them. Use an interface when you need to define a contract that can be implemented by any class, regardless of its place in the class hierarchy.
+
+
+
+==============================================
+
+Java 8 introduced several new features to interfaces, significantly expanding their capabilities. Here are the key features introduced for interfaces in Java 8:
+
+### Default Methods
+
+Java 8 allows interfaces to have default methods, which are methods with a body. This enables developers to add new methods to interfaces without breaking the existing implementations of these interfaces.
+
+**Example**:
+```java
+interface Animal {
+    void makeSound();
+    
+    default void sleep() {
+        System.out.println("Sleeping");
+    }
+}
+
+class Dog implements Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.makeSound();  // Output: Bark
+        dog.sleep();      // Output: Sleeping
+    }
+}
+```
+
+### Static Methods
+
+Interfaces can also have static methods, which are methods that belong to the interface itself rather than to instances of the interface. These methods can be called without an instance of the interface.
+
+**Example**:
+```java
+interface Animal {
+    void makeSound();
+    
+    static void info() {
+        System.out.println("This is an Animal interface");
+    }
+}
+
+class Dog implements Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal.info();  // Output: This is an Animal interface
+    }
+}
+```
+
+### Functional Interfaces
+
+Java 8 introduced the concept of functional interfaces, which are interfaces with a single abstract method. These interfaces can be implemented using lambda expressions. The `@FunctionalInterface` annotation is used to indicate that an interface is intended to be a functional interface.
+
+**Example**:
+```java
+@FunctionalInterface
+interface Greeting {
+    void sayHello(String name);
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Greeting greeting = (name) -> System.out.println("Hello, " + name);
+        greeting.sayHello("World");  // Output: Hello, World
+    }
+}
+```
+
+### Usage in Streams and Collections
+
+Java 8's functional interfaces such as `Predicate`, `Function`, `Supplier`, and `Consumer` are extensively used in the Streams API and other new Java 8 features.
+
+**Example** using `Predicate` in a Stream:
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+
+public class Main {
+    public static void main(String[] args) {
+        List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "Dave");
+        
+        Predicate<String> startsWithA = name -> name.startsWith("A");
+        
+        names.stream()
+             .filter(startsWithA)
+             .forEach(System.out::println);  // Output: Alice
+    }
+}
+```
+
+### Summary of Java 8 Interface Features
+
+- **Default Methods**: Methods with a body, allowing interfaces to provide common functionality without requiring implementing classes to define them.
+- **Static Methods**: Methods that belong to the interface itself and can be called on the interface.
+- **Functional Interfaces**: Interfaces with a single abstract method, which can be implemented using lambda expressions.
+- **Enhanced Usage in Streams and Collections**: Functional interfaces are integral to the new Streams API, enabling more functional programming styles in Java.
+
+These enhancements make interfaces much more powerful and flexible, allowing for backward-compatible evolution of interfaces and enabling more expressive and concise code through functional programming techniques.
