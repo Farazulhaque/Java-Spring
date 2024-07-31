@@ -1,0 +1,559 @@
+### Questions
+
+1. **Which of the following is the correct time complexity to search for an element in a balanced binary search tree (BST)?**
+   - A) O(n)
+   - B) O(log n)
+   - C) O(n log n)
+   - D) O(n^2)
+1. **B) O(log n)** - A balanced BST, like an AVL tree or Red-Black tree, allows for O(log n) search time.
+
+2. **In the context of data structures, what does the term "FIFO" stand for?**
+   - A) First In First Out
+   - B) First In Fast Out
+   - C) Fast In Fast Out
+   - D) Fast In First Out
+2. **A) First In First Out** - FIFO is a principle used by queues.
+
+3. **Which of the following sorting algorithms has the best average-case time complexity?**
+   - A) Bubble Sort
+   - B) Selection Sort
+   - C) Merge Sort
+   - D) Quick Sort
+3. **C) Merge Sort** - Merge Sort has a best average-case time complexity of O(n log n).
+
+4. **What is the time complexity of inserting an element into a hash table?**
+   - A) O(1) on average
+   - B) O(log n)
+   - C) O(n)
+   - D) O(n log n)
+4. **A) O(1) on average** - Inserting into a hash table generally has O(1) average time complexity.
+
+5. **Which data structure is used in the implementation of Depth First Search (DFS)?**
+   - A) Queue
+   - B) Stack
+   - C) Linked List
+   - D) Priority Queue
+5. **B) Stack** - DFS uses a stack either explicitly or through recursion.
+
+6. **Which of the following is a self-balancing binary search tree?**
+   - A) Binary Heap
+   - B) AVL Tree
+   - C) B-Tree
+   - D) Trie
+6. **B) AVL Tree** - An AVL tree is a type of self-balancing binary search tree.
+
+7. **What is the space complexity of the merge sort algorithm?**
+   - A) O(1)
+   - B) O(log n)
+   - C) O(n)
+   - D) O(n log n)
+7. **C) O(n)** - Merge sort requires O(n) additional space for merging.
+
+8. **Which of the following is not a characteristic of a red-black tree?**
+   - A) Every node is either red or black.
+   - B) The root is always black.
+   - C) Every leaf (NIL node) is red.
+   - D) Red nodes cannot have red children.
+8. **C) Every leaf (NIL node) is red.** - In a red-black tree, every leaf (NIL node) is black, not red.
+
+9. **What is the main advantage of using a linked list over an array?**
+   - A) Random access of elements
+   - B) Dynamic size
+   - C) Better cache locality
+   - D) Simplified index calculations
+9. **B) Dynamic size** - Linked lists can grow or shrink in size dynamically.
+
+10. **Which traversal method is used to get the elements of a binary search tree in ascending order?**
+    - A) Pre-order
+    - B) In-order
+    - C) Post-order
+    - D) Level-order
+10. **B) In-order** - In-order traversal of a BST retrieves elements in ascending order.
+
+11. **Which of the following operations is not typically associated with a stack?**
+    - A) Push
+    - B) Pop
+    - C) Peek
+    - D) Enqueue
+11. **D) Enqueue** - Enqueue is an operation associated with queues, not stacks.
+
+12. **In a max heap, the value of each node is:**
+    - A) Greater than or equal to the values of its children
+    - B) Less than or equal to the values of its children
+    - C) Equal to the values of its children
+    - D) Not related to the values of its children
+12. **A) Greater than or equal to the values of its children** - This is the property of a max heap.
+
+13. **Which of the following graph traversal algorithms uses a queue?**
+    - A) Depth First Search (DFS)
+    - B) Breadth First Search (BFS)
+    - C) Dijkstra's Algorithm
+    - D) Prim's Algorithm
+13. **B) Breadth First Search (BFS)** - BFS uses a queue to keep track of nodes to visit.
+
+14. **What is the time complexity of accessing an element in an array by index?**
+    - A) O(1)
+    - B) O(log n)
+    - C) O(n)
+    - D) O(n log n)
+14. **A) O(1)** - Accessing an element by index in an array takes constant time.
+
+15. **Which data structure can be used to implement a priority queue efficiently?**
+    - A) Stack
+    - B) Queue
+    - C) Binary Heap
+    - D) Linked List
+15. **C) Binary Heap** - Binary heaps are commonly used to implement priority queues.
+
+16. **In an undirected graph, if a node has no edges connected to it, the node is called:**
+    - A) Isolated
+    - B) Leaf
+    - C) Root
+    - D) Terminal
+16. **A) Isolated** - A node with no edges is called isolated.
+
+17. **Which of the following statements is true about binary search?**
+    - A) It can be used on any list.
+    - B) It can only be used on a sorted list.
+    - C) It is slower than linear search.
+    - D) It can be used to search linked lists efficiently.
+17. **B) It can only be used on a sorted list.** - Binary search requires the list to be sorted.
+
+18. **Which sorting algorithm is considered the fastest for large datasets?**
+    - A) Bubble Sort
+    - B) Insertion Sort
+    - C) Quick Sort
+    - D) Selection Sort
+18. **C) Quick Sort** - Quick Sort is generally considered the fastest for large datasets due to its average-case time complexity of O(n log n).
+
+19. **Which of the following data structures is most appropriate for implementing a LRU (Least Recently Used) cache?**
+    - A) Array
+    - B) Linked List
+    - C) Queue
+    - D) Hash Map combined with Doubly Linked List
+19. **D) Hash Map combined with Doubly Linked List** - This combination allows efficient implementation of LRU cache.
+
+20. **In a directed graph, a cycle that visits every vertex exactly once is called a:**
+    - A) Hamiltonian Path
+    - B) Eulerian Path
+    - C) Hamiltonian Cycle
+    - D) Eulerian Cycle
+20. **C) Hamiltonian Cycle** - A Hamiltonian Cycle visits every vertex exactly once and returns to the starting vertex.
+
+21. **Which of the following is true for an adjacency matrix of an undirected graph with  n  vertices?**
+    - A) It is a lower triangular matrix.
+    - B) It is an upper triangular matrix.
+    - C) It is a symmetric matrix.
+    - D) It is a diagonal matrix.
+21. **C) It is a symmetric matrix.** - In an undirected graph, the adjacency matrix is symmetric.
+
+22. **Which of the following algorithms is used to find the shortest path in a weighted graph with non-negative weights?**
+    - A) Depth First Search (DFS)
+    - B) Breadth First Search (BFS)
+    - C) Dijkstra's Algorithm
+    - D) Floyd-Warshall Algorithm
+22. **C) Dijkstra's Algorithm** - Dijkstra's Algorithm is used to find the shortest path in a weighted graph with non-negative weights.
+
+23. **In a linked list, the last node has which of the following pointers?**
+    - A) Pointer to the first node
+    - B) Pointer to the next node
+    - C) Pointer to the previous node
+    - D) Null pointer
+23. **D) Null pointer** - The last node in a linked list has a null pointer.
+
+24. **Which of the following data structures does not allow duplicate elements?**
+    - A) Array
+    - B) Linked List
+    - C) Stack
+    - D) Set
+24. **D) Set** - A set does not allow duplicate elements.
+
+25. **What is the best case time complexity of Quick Sort?**
+    - A) O(n^2)
+    - B) O(n log n)
+    - C) O(n)
+    - D) O(log n)
+25. **B) O(n log n)** - The best case time complexity of Quick Sort is O(n log n).
+
+26. **Which of the following is not a type of tree traversal?**
+    - A) In-order
+    - B) Pre-order
+    - C) Post-order
+    - D) Random-order
+26. **D) Random-order** - Random-order is not a type of tree traversal.
+
+27. **What is the worst-case time complexity for searching an element in a hash table?**
+    - A) O(1)
+    - B) O(log n)
+    - C) O(n)
+    - D) O(n log n)
+27. **C) O(n)** - The worst-case time complexity for searching an element in a hash table is O(n).
+
+28. **Which of the following statements is true about a circular queue?**
+    - A) It does not have a fixed size.
+    - B) It is also known as a dequeue.
+    - C) The front and rear pointers can wrap around to the beginning of the array.
+    - D) It can only be implemented using linked lists.
+28. **C) The front and rear pointers can wrap around to the beginning of the array.** - This is the defining characteristic of a circular queue.
+
+29. **In a binary tree, a node with two children is called a:**
+    - A) Leaf Node
+    - B) Root Node
+    - C) Internal Node
+    - D) External Node
+29. **C) Internal Node** - An internal node is a node with at least one child, typically having two children.
+
+30. **Which of the following algorithms is not used for finding the minimum spanning tree of a graph?**
+    - A) Prim's Algorithm
+    - B) Kruskal's Algorithm
+    - C) Boruvka's Algorithm
+    - D) Bellman-Ford Algorithm
+30. **D) Bellman-Ford Algorithm** - Bellman-Ford Algorithm is used for finding the shortest path, not for finding the minimum spanning tree.
+
+31. **Which of the following sorting algorithms is stable?**
+    - A) Quick Sort
+    - B) Heap Sort
+    - C) Merge Sort
+    - D) Selection Sort
+31. **C) Merge Sort** - Merge Sort is a stable sorting algorithm.
+
+32. **Which data structure is used to implement recursion?**
+    - A) Queue
+    - B) Stack
+    - C) Linked List
+    - D) Tree
+32. **B) Stack** - Recursion is implemented using a stack.
+
+33. **In a binary tree, the number of leaf nodes is one more than the number of nodes with two children. This type of tree is called:**
+    - A) Complete Binary Tree
+    - B) Full Binary Tree
+    - C) Perfect Binary Tree
+    - D) Binary Search Tree
+33. **B) Full Binary Tree** - In a full binary tree, the number of leaf nodes is one more than the number of nodes with two children.
+
+34. **What is the primary advantage of a doubly linked list over a singly linked list?**
+    - A) Requires less memory per node
+    - B) Easier to reverse the list
+    - C) Easier to implement
+    - D) Better cache locality
+34. **B) Easier to reverse the list** - A doubly linked list allows for easier reversal as it has pointers to both the next and previous nodes.
+
+35. **Which of the following data structures can be used to implement a LIFO (Last In First Out) principle?**
+    - A) Queue
+    - B) Stack
+    - C) Priority Queue
+    - D) Deque
+35. **B) Stack** - A stack follows the LIFO principle.
+
+36. **Which of the following is the correct postfix notation for the infix expression  (A + B) * (C - D) ?**
+    - A) AB + CD - *
+    - B) AB + CD * -
+    - C) A + B * C - D
+    - D) ABCD + - *
+36. **A) AB + CD - *** - This is the correct postfix notation for the given infix expression.
+
+### Infix to Postfix Conversion
+
+1. **Infix Expression**:  (A + B) * (C - D) 
+
+   The order of operations (precedence) and the position of the parentheses determine how the expression is evaluated. We will use the Shunting Yard algorithm to convert the infix expression to postfix notation.
+
+2. **Shunting Yard Algorithm Steps**:
+   - **Initialize**:
+     - **Operand Stack**: Used to store operators and parentheses.
+     - **Output Queue**: Used to build the postfix expression.
+
+   - **Process each symbol**:
+     1. **Read `(`**:
+        - Push to the stack.
+        - Stack: `(`, Output: 
+     2. **Read `A`**:
+        - Add to the output queue.
+        - Stack: `(`, Output: `A`
+     3. **Read `+`**:
+        - Push to the stack.
+        - Stack: `(`, `+`, Output: `A`
+     4. **Read `B`**:
+        - Add to the output queue.
+        - Stack: `(`, `+`, Output: `A`, `B`
+     5. **Read `)`**:
+        - Pop from the stack to the output queue until `(` is encountered.
+        - Stack: , Output: `A`, `B`, `+`
+     6. **Read `*`**:
+        - Push to the stack.
+        - Stack: `*`, Output: `A`, `B`, `+`
+     7. **Read `(`**:
+        - Push to the stack.
+        - Stack: `*`, `(`, Output: `A`, `B`, `+`
+     8. **Read `C`**:
+        - Add to the output queue.
+        - Stack: `*`, `(`, Output: `A`, `B`, `+`, `C`
+     9. **Read `-`**:
+        - Push to the stack.
+        - Stack: `*`, `(`, `-`, Output: `A`, `B`, `+`, `C`
+    10. **Read `D`**:
+        - Add to the output queue.
+        - Stack: `*`, `(`, `-`, Output: `A`, `B`, `+`, `C`, `D`
+    11. **Read `)`**:
+        - Pop from the stack to the output queue until `(` is encountered.
+        - Stack: `*`, Output: `A`, `B`, `+`, `C`, `D`, `-`
+    12. **End of Expression**:
+        - Pop all remaining operators to the output queue.
+        - Stack: , Output: `A`, `B`, `+`, `C`, `D`, `-`, `*`
+
+3. **Final Postfix Expression**: `AB + CD - *`
+
+Therefore, the correct postfix notation for the infix expression  (A + B) * (C - D)  is:
+
+**A) AB + CD - ***
+
+37. **Which algorithm is used to detect a cycle in a graph?**
+    - A) Kruskal's Algorithm
+    - B) Prim's Algorithm
+    - C) Floyd-Warshall Algorithm
+    - D) Depth First Search (DFS)
+37. **D) Depth First Search (DFS)** - DFS can be used to detect a cycle in a graph.
+
+38. **Which of the following is true about a binary min-heap?**
+    - A) The smallest element is at the root.
+    - B) The largest element is at the root.
+    - C) It is always a complete binary tree.
+    - D) Both A and C.
+38. **D) Both A and C.** - In a binary min-heap, the smallest element is at the root, and it is always a complete binary tree.
+
+39. **In which data structure is the insertion operation performed at the rear end and the deletion operation performed at the front end?**
+    - A) Stack
+    - B) Queue
+    - C) Deque
+    - D) Priority Queue
+39. **B) Queue** - In a queue, insertion is performed at the rear end and deletion at the front end.
+
+40. **Which of the following searching algorithms has a time complexity of O(n log n)?**
+    - A) Linear Search
+    - B) Binary Search
+    - C) Jump Search
+    - D) None of the above
+40. **D) None of the above** - None of the common searching algorithms (Linear Search, Binary Search, Jump Search) have a time complexity of O(n log n); typically sorting algorithms have such complexity.
+
+41. **Which of the following is true about a hash function in a hash table?**
+    - A) It maps a given value to a unique key.
+    - B) It maps a given key to a unique value.
+    - C) It maps a given key to an index in the hash table.
+    - D) It maps a given index to a key in the hash table.
+41. **C) It maps a given key to an index in the hash table.** - A hash function maps a key to an index in the hash table.
+
+42. **Which of the following statements is true for an undirected graph?**
+    - A) Every tree is a graph but not every graph is a tree.
+    - B) Every graph is a tree but not every tree is a graph.
+    - C) Every graph has a cycle.
+    - D) Every tree has a cycle.
+42. **A) Every tree is a graph but not every graph is a tree.** - A tree is a special type of graph without cycles.
+
+43. **Which of the following is the best data structure for storing hierarchical data?**
+    - A) Array
+    - B) Linked List
+    - C) Stack
+    - D) Tree
+43. **D) Tree** - Trees are best for storing hierarchical data.
+
+44. **What is the time complexity of accessing the minimum element in a min-heap?**
+    - A) O(1)
+    - B) O(log n)
+    - C) O(n)
+    - D) O(n log n)
+44. **A) O(1)** - Accessing the minimum element in a min-heap is O(1).
+
+45. **Which of the following traversal algorithms can be used to traverse a graph?**
+    - A) In-order Traversal
+    - B) Pre-order Traversal
+    - C) Breadth First Search
+    - D) Binary Search
+45. **C) Breadth First Search** - BFS is used to traverse a graph.
+
+46. **In which of the following scenarios would you use a trie data structure?**
+    - A) When you need to store integers.
+    - B) When you need to store a list of words and quickly search for them.
+    - C) When you need to implement LIFO functionality.
+    - D) When you need to sort data.
+46. **B) When you need to store a list of words and quickly search for them.** - Tries are used for efficient storage and retrieval of strings.
+
+47. **Which of the following sorting algorithms is NOT in-place?**
+    - A) Quick Sort
+    - B) Merge Sort
+    - C) Heap Sort
+    - D) Bubble Sort
+47. **B) Merge Sort** - Merge Sort is not an in-place sorting algorithm as it requires additional space.
+
+48. **What is the time complexity of adding an element to the front of a linked list?**
+    - A) O(1)
+    - B) O(log n)
+    - C) O(n)
+    - D) O(n log n)
+48. **A) O(1)** - Adding an element to the front of a linked list takes constant time.
+
+49. **Which of the following data structures is best suited for implementing a browser's back and forward navigation?**
+    - A) Queue
+    - B) Stack
+    - C) Deque
+    - D) Priority Queue
+49. **B) Stack** - Stacks are used for back and forward navigation in browsers.
+
+50. **Which of the following statements is true about dynamic programming?**
+    - A) It is a technique for solving optimization problems by breaking them down into overlapping subproblems.
+    - B) It is a sorting technique.
+    - C) It is used to solve problems in constant time.
+    - D) It is a type of recursive algorithm that does not use memoization.
+50. **A) It is a technique for solving optimization problems by breaking them down into overlapping subproblems.** - Dynamic programming solves problems by breaking them into subproblems and solving each subproblem just once.
+
+Certainly! Here are multiple-choice questions covering the conversions between infix, postfix, and prefix notations, along with their answers:
+
+### Questions
+
+41. **What is the postfix notation for the infix expression  A + B X C ?**
+    - A)  AB + C X 
+    - B)  ABC X + 
+    - C)  A + BC X 
+    - D)  A X B + C 
+41. **B)  ABC X + ** - In postfix notation, the operator follows the operands.
+
+42. **Convert the infix expression  (A + B) X (C + D)  to prefix notation.**
+    - A)  A + B X C + D 
+    - B)  X + A B + C D 
+    - C)  + X A B X C D 
+    - D)  + A B X + C D 
+
+To convert the infix expression (A + B) X(C + D) to prefix notation, we can follow these steps:
+
+1. **Identify the main operator**:
+   - The main operator here is `×` which separates the two parts of the expression: `(A + B)` and `(C + D)`.
+
+2. **Convert each part to prefix notation**:
+   - The infix expression `A + B` converts to `+ A B` in prefix notation.
+   - The infix expression `C + D` converts to `+ C D` in prefix notation.
+
+3. **Combine the results with the main operator**:
+   - The entire expression `(A + B) X(C + D)` in prefix notation would place the main operator `×` before its two operands, which are the prefix notations of `A + B` and `C + D`.
+
+Thus, combining these parts, the prefix notation of (A + B) X(C + D) is `× + A B + C D`.
+
+### Answer
+
+42. **B)  X + A B + C D ** - Convert each part to prefix and then combine.
+
+43. **What is the infix notation for the postfix expression  AB + CD X - ?**
+    - A)  (A + B) - (C X D) 
+    - B)  (A + B) X (C - D) 
+    - C)  (A X B) - (C + D) 
+    - D)  (A - B) + (C X D) 
+43. **A)  (A + B) - (C X D) ** - Convert postfix to infix.
+
+To convert the postfix expression \( AB + CD \times - \) to infix notation, we can follow these steps:
+
+1. **Understand the postfix notation**:
+   - Postfix notation requires reading the operands first and then the operators in the order they are applied.
+
+2. **Convert postfix to infix**:
+   - Start from the beginning of the postfix expression and work backward:
+     - \( AB + \) converts to \( (A + B) \)
+     - \( CD \times \) converts to \( (C \times D) \)
+     - \( - \) indicates subtraction
+
+3. **Combine the converted parts**:
+   - From the postfix expression \( AB + CD \times - \), we convert to infix notation as follows:
+     - \( AB + \) converts to \( (A + B) \)
+     - \( CD \times \) converts to \( (C \times D) \)
+     - Combine these with the subtraction operator \( - \) in between.
+
+Therefore, the infix notation for the postfix expression \( AB + CD \times - \) is \( (A + B) - (C \times D) \).
+
+### Answer
+
+**A) \( (A + B) - (C \times D) \)**
+
+44. **Convert the infix expression  A X (B + C) - D  to postfix notation.**
+    - A)  A B C + X D - 
+    - B)  A B + C X D - 
+    - C)  A B X C + D - 
+    - D)  A B C + D X - 
+44. **A)  A B C + X D - ** - Process the operations according to precedence.
+
+45. **What is the prefix notation for the infix expression  (A + B) / (C - D) ?**
+    - A)  / + A B - C D 
+    - B)  + A B / C - D 
+    - C)  / A + B - C D 
+    - D)  + / A B - C D 
+45. **A)  / + A B - C D ** - Convert each part to prefix and then combine.
+
+46. **Convert the postfix expression  ABC X + DE -  to infix notation.**
+    - A)  (A + B) X C - D + E 
+    - B)  (A X B + C) - (D + E) 
+    - C)  ((A + (B X C)) - (D - E)) 
+    - D)  A + (B X (C - D)) + E 
+To convert the postfix expression \( ABC \times + DE - \) to infix notation, we can use the following approach, which involves using a stack to help manage operators and operands:
+
+### Step-by-step Conversion
+
+1. **Read each symbol from left to right** in the postfix expression.
+
+2. **Use a stack** to temporarily hold operands and operators as we build the infix expression.
+
+3. **Process each symbol**:
+   - If the symbol is an operand (like \( A, B, C, D, E \)), push it onto the stack.
+   - If the symbol is an operator (like \( +, \times, - \)):
+     - Pop the necessary number of operands from the stack to construct the infix expression.
+     - Combine the operands and the operator in the correct order to form the infix expression segment.
+     - Push this resulting expression back onto the stack.
+
+### Applying the steps to the postfix expression \( ABC \times + DE - \):
+
+- Start with an empty stack.
+- Process each symbol:
+
+   - **A**: Push \( A \) onto the stack.
+   - **B**: Push \( B \) onto the stack.
+   - **C**: Push \( C \) onto the stack.
+   - **\(\times\)**: Pop \( C \) and \( B \) from the stack, construct \( B \times C \), push \( B \times C \) back onto the stack.
+   - **+**: Pop \( A \) and \( B \times C \) from the stack, construct \( A + (B \times C) \), push \( A + (B \times C) \) back onto the stack.
+   - **D**: Push \( D \) onto the stack.
+   - **E**: Push \( E \) onto the stack.
+   - **-**: Pop \( E \) and \( D \) from the stack, construct \( D - E \), push \( D - E \) back onto the stack.
+
+- After processing all symbols, the stack should contain the final infix expression.
+
+### Final Infix Expression
+
+From the steps above, the final infix expression corresponding to the postfix expression \( ABC \times + DE - \) is \( (A + (B \times C)) - (D - E) \).
+
+### Answer
+
+**C) \( ((A + (B \times C)) - (D - E)) \)**
+
+This represents the correct infix notation for the given postfix expression.
+
+47. **What is the postfix notation for the infix expression  (A - B) / (C + D) X E ?**
+    - A)  AB - CD + / E X 
+    - B)  AB - / CD + E X 
+    - C)  AB - CD / + E X 
+    - D)  AB - CD + E / X 
+47. **A)  AB - CD + / E X ** - Process the operations according to precedence.
+
+48. **Convert the prefix expression  + A X B C  to infix notation.**
+    - A)  (A + (B X C)) 
+    - B)  (A X (B + C)) 
+    - C)  ((A + B) X C) 
+    - D)  ((A X B) + C) 
+48. **A)  (A + (B X C)) ** - Convert prefix to infix.
+
+49. **What is the prefix notation for the infix expression  A X (B + (C / D)) ?**
+    - A)  X A + B / C D 
+    - B)  X A B + C / D 
+    - C)  X A + B C / D 
+    - D)  X A + / C D B 
+49. **A)  X A + B / C D ** - Convert each part to prefix and then combine.
+
+50. **Convert the postfix expression  AB + C X D -  to prefix notation.**
+    - A)  - + A B X C D 
+    - B)  + A X B C D - 
+    - C)  X + A B C D - 
+    - D)  - X A B + C D 
+50. **A)  - + A B X C D ** - Convert postfix to prefix.

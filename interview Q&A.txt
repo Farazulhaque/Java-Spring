@@ -132,7 +132,7 @@ HOW SPRING BOOT STARTS?
 ============================
 
 Starts by calling main() method of your main class.
-The run() method of ApringApplication is called. This method starts the application by creating an application context and initializing it.
+The run() method of SpringApplication is called. This method starts the application by creating an application context and initializing it.
 Once the application context is initialises, the run() method starts the application's embedded web server.
 
 
@@ -140,6 +140,7 @@ Once the application context is initialises, the run() method starts the applica
 ============================
 TOP SPRING BOOT ANNOTATIONS
 ============================
+
 @SpringBootApplication: It combines three annotations: 
 @Configuration: ,
 -> Indicates that the class can be used by the Spring IoC container as a source of bean definitions
@@ -162,10 +163,117 @@ TOP SPRING BOOT ANNOTATIONS
 -> It is a generic stereotype for any Spring-managed component. You can use it to annotate classes that perform a variety of tasks in your application, and Spring will recognize and manage these classes as beans.
 
 @Autowired: 
--> The @Autowired annotation in Spring Boot is used to automatically inject dependencies into a Spring-managed bean. This feature is a core part of the Spring Framework's Dependency Injection (DI) and Inversion of Control (IoC) mechanisms. Below is a detailed explanation of @Autowired in the context of Spring Boot, along with an example.
+-> The @Autowired annotation in Spring Boot is used to automatically inject dependencies into a Spring-managed bean. This feature is a core part of the Spring Framework's Dependency Injection (DI) and Inversion of Control (IoC) mechanisms.
 -> By using this annotation, you let Spring manage the lifecycle and dependency graph of your beans, promoting loose coupling and enhancing testability.
 
 @Service: 
 -> The @Service annotation in Spring Boot is used to indicate that a class is a "service" class, which typically contains business logic. It is a specialization of the @Component annotation, which means that the class annotated with @Service is also a Spring bean and will be automatically detected through classpath scanning.
 
 @RestController: 
+-> @RestController in Spring Boot is like a special tool we use to create web services, particularly for building APIs (Application Programming Interfaces). It helps us send and receive data between different software systems over the internet.
+-> It's used to indicate that the data returned by the methods of the annotated class should be directly written to the HTTP response body as JSON/XML/any other type of response body content instead of relying on a view technology to perform server-side rendering of the output.
+-> @RestController is particularly useful when you're building RESTful web services or APIs where the response is often JSON or XML data rather than HTML for human consumption. It saves you from explicitly annotating each method with @ResponseBody in such cases.
+
+@Controller: 
+-> The primary purpose of a controller in a Spring MVC application is to handle incoming HTTP requests from clients and generate an appropriate response. These requests typically correspond to user actions, such as clicking a link, submitting a form, or making an AJAX call.
+-> Controllers typically contain methods annotated with @RequestMapping (or other variants like @GetMapping, @PostMapping, etc.). These annotations define the URL patterns that the controller method can handle. For example, a method annotated with @GetMapping("/products") would handle GET requests to the "/products" URL.
+-> When a request comes in, the DispatcherServlet examines the URL and consults the request mappings defined in the registered controllers. If it finds a matching mapping, it delegates the request to the corresponding controller method for processing.
+-> Controller methods typically return a ModelAndView object or a String representing the view name. The model contains data to be displayed by the view, while the view is responsible for rendering the response to the client.
+-> In Spring Boot applications, controllers are automatically discovered and registered as beans, thanks to the auto-configuration provided by Spring Boot. You can simply annotate your controller classes with @Controller and define request mappings to handle HTTP requests.
+
+@RequestMapping:
+-> @RequestMapping is a Spring annotation used to map web requests to specific handler methods in Spring MVC and Spring WebFlux applications. It is used to define the URL pattern that a controller method will handle. 
+-> In Spring Boot, which builds upon the Spring framework, @RequestMapping is commonly used in RESTful web services to define the endpoints of the API.
+-> Starting from Spring 4.3, you can use more specific annotations instead of @RequestMapping. For example:
+   @GetMapping for GET requests
+   @PostMapping for POST requests
+   @PutMapping for PUT requests
+   @DeleteMapping for DELETE requests
+
+@Repository: 
+-> In Spring Framework, @Repository is an annotation used at the class level to indicate that the class provides mechanisms for storage, retrieval, search, update, and delete operations on objects. 
+-> It is typically used to annotate classes that access the database or any other type of persistence mechanism.
+
+
+
+==================================
+WHAT ARE THE SPRING BOOT STARTERS?
+==================================
+
+-> Starters are a collection of pre-configured dependencies that make it easier to develop particular kinds of applications.
+-> These starters include all of the dependencies, version control, and configurations needed to make certain features of Spring Boot application functional.
+
+
+
+=============================================
+WHAT ARE THE KEY DEPENDENCIES OF SPRING BOOT?
+=============================================
+
+-> spring-boot-starter-parent
+-> spring-bbot-maven-plugin
+-> spring-boot-starter-test
+-> spring-boot-starter-web
+-> spring-bbot-starter-security
+
+
+
+=============================================
+WHAT IS spring-boot-starter-parent?
+=============================================
+
+-> Spring Boot Starter Parent is a starter project that provides the default configuration for spring based application.
+   - The dependency management feature manages the versions of common dependencies.
+   - Provide the default compiler level as Java 1.8 and UTF-8 source encoding.
+   - Provides a default configuration for maven plugin.
+
+
+
+==================================================
+WHAT IS SPRING BBOT CLI AND WHAT ARE ITS BENEFITS?
+==================================================
+
+-> Command line tool to create, run and manage spring boot Applications.
+
+spring version
+spring help
+spring init
+spring help init
+spring init --list
+
+spring init -d web cli-project
+
+
+
+==================
+WHAT IS THYMELEAF?
+==================
+
+-> Java based server-side templating engine used in Java web applications to render dynamic web pages.
+
+
+
+====================================
+WHAT IS IOC OR INVERSION OF CONTROL?
+====================================
+
+-> Inverting the control of creating object using new keyword to container or framework.
+
+
+
+=============================
+EXPLAIN SPRING BEAN LIFECYCLE
+=============================
+
+-> Bean - Plain Old Java Object
+-> Spring Bean lifecycle is maintained by IOC container.
+   1. Container gets started
+   2. Container creates object of the bean as per request.
+   3. Dependencies is created.
+   4. Dependencies is injected.
+   5. Destroyed when container is closed.
+   
+
+
+
+
+

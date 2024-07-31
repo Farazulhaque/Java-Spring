@@ -1,0 +1,136 @@
+List < String > colors = Arrays.asList("RED", "grEEn", "white", "Orange", "pink");
+
+my answer - colors.stream().map(colors,colors.toUpperCase).toList()
+
+correct answer - List<String> upperCaseColors = colors.stream()
+.map(String::toUpperCase)
+.collect(Collectors.toList());
+
+
+List<Integer> intList=[112, 234, 563, 199, 896, 1087]
+
+my answer - intList.stream().filter(i -> i.startsWith("1"))
+
+correct answer - List<Integer> numbersStartingWithOne = intList.stream()
+                                                      .filter(n -> String.valueOf(n).startsWith("1"))
+                                                      .collect(Collectors.toList());
+       
+
+==========================================================================================
+
+1. Given a list of integers, write a Java 8 Stream API code to find the sum of all even numbers in the list.
+
+List<Integer> intList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+my answer - intList.stream().filter(n % 2 == 0).sum()
+
+correct answer - intList.stream().filter(n -> n % 2 == 0).mapToInt(Integer::intValue).sum();  
+
+correct answer - intList.stream().filter(n -> n % 2 == 0).reduce(0, Integer::sum);  // Sum the numbers
+
+==========================================================================================
+
+2. Write a Java 8 Stream API code to filter out names starting with a specific letter from a list of strings.
+
+List<String> stringList = Arrays.asList("faraz","deepak","deep","faizan");
+
+stringList.filter(n -> !n.startsWith("d")).collect(Collectors.toList());
+
+==========================================================================================
+
+3. Given a list of strings, write a Java 8 Stream API code to convert all strings to uppercase.
+
+List<String> stringList = Arrays.asList("faraz","deepak","deep","faizan");
+
+stringList.map(String :: toUpperCase).collect(Collectors.toList());
+
+Sure! Here are some coding questions focused on Java 8 Stream API:
+
+==========================================================================================
+
+4. Write a Java 8 Stream API code to find the first element in a list of integers that is greater than 10.
+
+List<Integer> intList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+
+intList.stream().filter(n -> n > 10).findFirst(); 
+
+==========================================================================================
+
+5. Given a list of integers, write a Java 8 Stream API code to sort the list in descending order.
+
+List<Integer> intList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+
+intList.stream().sorted((a, b) -> b - a).collect(Collectors.toList());
+
+==========================================================================================
+
+6. Write a Java 8 Stream API code to join a list of strings with a comma separator.
+
+List<String> stringList = Arrays.asList("faraz","deepak","deep","faizan");
+
+stringList.stream().collect(Collectors.join(", ));
+
+==========================================================================================
+
+7. Given a list of integers, write a Java 8 Stream API code to find the maximum value in the list.
+
+List<Integer> intList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+
+intList.stream().max(Integer::compareTo)
+
+==========================================================================================
+
+8. Write a Java 8 Stream API code to count the number of unique elements in a list of strings.
+
+List<String> stringList = Arrays.asList("faraz", "deepak", "deep", "faizan", "deepak", "faraz");
+
+long uniqueCount = stringList.stream().distinct().count();    
+
+==========================================================================================
+
+9. Given a list of employees (with fields: name, age, salary), write a Java 8 Stream API code to find the employee with the highest salary.
+
+==========================================================================================
+
+10. Write a Java 8 Stream API code to group a list of strings by their length.
+
+List<String> stringList = Arrays.asList("faraz", "deepak", "deep", "faizan");
+
+Map<Integer, List<String>> groupedByLength = stringList.stream().collect(Collectors.groupingBy(String::length));
+
+==========================================================================================
+
+11. Given a list of integers, write a Java 8 Stream API code to find the average of the numbers.
+
+List<Integer> intList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+
+intList.stream().mapToInt(Integer::intValue).average();
+
+==========================================================================================
+
+12. Write a Java 8 Stream API code to partition a list of integers into two lists: one containing even numbers and the other containing odd numbers.
+
+List<Integer> intList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+
+intList.stream().filter(n -> n % 2 == 0 ).collect(Collectors.toList());
+intList.stream().filter(n -> n % 2 != 0 ).collect(Collectors.toList());
+
+Map<Boolean, List<Integer>> partitionedMap = intList.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0));
+
+List<Integer> evenNumbers = partitionedMap.get(true);
+List<Integer> oddNumbers = partitionedMap.get(false);
+
+13. Given a list of strings, write a Java 8 Stream API code to count the number of strings that contain the letter 'a'.
+
+14. Write a Java 8 Stream API code to create a list of the squares of all numbers from 1 to 10.
+
+15. Given a list of integers, write a Java 8 Stream API code to remove duplicate elements.
+
+16. Write a Java 8 Stream API code to collect all strings from a list that are longer than 3 characters into a new list.
+
+17. Given a list of integers, write a Java 8 Stream API code to calculate the product of all numbers.
+
+18. Write a Java 8 Stream API code to concatenate two lists of integers into a single list.
+
+19. Given a list of employees (with fields: name, age, salary), write a Java 8 Stream API code to get a list of employees whose age is greater than 30.
+
+20. Write a Java 8 Stream API code to find the longest string in a list of strings.
