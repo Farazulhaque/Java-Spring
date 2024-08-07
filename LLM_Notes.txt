@@ -1,0 +1,1132 @@
+# Large Language Models (LLMs) Documentation
+
+## Overview
+
+A **Large Language Model (LLM)** is a probabilistic model of text, with the "large" referring to the number of parameters it contains. These models are designed to understand and generate human-like text by learning from vast amounts of data.
+
+### LLM Architecture
+
+**Encoders and Decoders**
+- **Encoders**: Convert a sequence of words into an embedding (vector representation). Examples include MiniLM, Embed-Light, BERT. **Primary use**: Embedding tokens, sentences, and documents.
+- **Decoders**: Take a sequence of words and output the next word. Examples include GPT-4, LLaMA. **Primary use**: Generating the next word in a sequence.
+- **Encoder-Decoder**: Encodes a sequence of words and uses the encoding to output the next word.
+
+### Capabilities of LLMs
+- **Embedding**: Embedding text is a numeric representation of text capturing its meaning. The input is a sequence of words, and the output is a generated sequence of words.
+- **Text Generation**: Generating text one word at a time based on the input sequence.
+
+## Prompting and Training
+
+### Affecting Distribution Over Vocabulary
+1. **Prompting**: Adding precise words to influence the model's next word prediction. Various strategies include:
+   - **In-context Learning**: Conditioning an LLM with instructions or demonstrations.
+   - **k-shot Prompting**: Providing k examples of the task in the prompt.
+   - **Chain-of-Thought**: Prompting the LLM to emit intermediate reasoning steps.
+   - **Least-to-Most**: Prompting the LLM to decompose the problem and solve from easy to complex.
+   - **Step-Back**: Prompting the LLM to identify high-level concepts pertinent to a task.
+
+### Issues with Prompting
+- **Prompt Injection (Jailbreaking)**: Providing input that causes the LLM to ignore instructions or behave unexpectedly.
+
+2. **Training**: Appropriate when training data exists or domain adaptation is needed.
+   - **Domain-Adaptation**: Enhancing model performance outside its original training domain via additional training.
+
+## Decoding
+
+### Generating Text
+- Decoding happens one word at a time.
+- **Greedy Decoding**: Picks the highest probability word at each step.
+- **Non-Deterministic Decoding**: Picks randomly among high probability candidates.
+- **Temperature**: A hyperparameter that modulates the distribution over vocabulary. Lower temperatures focus on the most likely word, higher temperatures spread the probability across more words. Increasing temperature flattens the distribution, allowing for more varied word choices.
+
+### Types of Decoding
+- **Greedy Decoding**
+- **Nucleus Sampling**
+- **Beam Search**: Generates multiple similar sequences and removes the low probability sequences.
+
+## Hallucination
+
+- **Hallucination**: Generated text that is non-factual or not grounded in reality.
+- **Groundedness**: Ensuring generated text is supported by a document.
+- **Attributability**: The ability of a system to output documents that support its answers.
+
+## LLM Applications
+
+### Retrieval Augmented Generation
+- **Used in**: QA, dialogue, fact-checking, slot filling, entity linking.
+- **Non-Parametric**: The same model can answer questions about any corpus.
+
+### Code Models
+- **Examples**: Co-pilot, Codex, Code Llama.
+- **Tasks**: Completing functions, synthesizing programs from docstrings, debugging.
+
+### Multi-Modal Models
+- **Tasks**: Image-to-text, text-to-image, video generation, audio generation.
+- **Examples**: DALL-E, Stable Diffusion.
+
+### Language-Agents
+- **Tasks**: Planning, reasoning, taking actions based on plans and the environment.
+- **Notable Work**: ReAct, Toolformer, Bootstrapped Reasoning.
+
+## OCI Generative AI Service
+
+### Pretrained Foundation Models
+- **Generation**: Command, Command-Light, LLaMA 2-70b-chat.
+- **Summarization**: Command model for summarizing text.
+- **Embedding**: Embed-English-v3.0, Embed-Multilingual-v3.0 for converting text to vector embeddings.
+
+### Fine-Tuning
+- **Purpose**: Optimize a pretrained model on a smaller, domain-specific dataset to improve performance and efficiency.
+
+### Dedicated AI Clusters
+- **Features**: GPU-based compute resources, RDMA cluster network.
+
+## Generation Models
+
+### Tokens
+- **Understanding Tokens**: Models understand tokens, which can be parts of words, whole words, or punctuation.
+- **Parameters**: 
+  - **Temperature**: Controls the creativity and randomness of the output.
+  - **Top p, Top k**: Additional ways to pick output tokens.
+  - **Presence/Frequency Penalty**: Reduces repetitive text.
+  - **Show Likelihoods**: Shows how likely a token is to follow the current generated token.
+
+### Summarization Model
+- **Uses**: Summarizing news articles, blogs, chat transcripts, scientific articles, meeting notes.
+
+## Embedding Models
+
+### Embeddings
+- **Purpose**: Numerical representation of text for easy computer understanding.
+- **Types**:
+  - **Word Embeddings**: Capture properties of words.
+  - **Sentence Embeddings**: Assign vectors to sentences.
+- **Similarity Metrics**: Cosine and dot product similarity for computing numerical similarity.
+
+## Prompt Engineering
+
+### Techniques
+- **Prompt Engineering**: Refining a prompt to elicit a desired response.
+- **Reinforcement Learning from Human Feedback (RLHF)**: Fine-tuning LLMs with human feedback.
+- **In-Context Learning and Few-Shot Prompting**: Conditioning the LLM with instructions or demonstrations.
+
+## Soft Prompting
+- When there is a need to add learnable parameters to a large language model (LLM) without task specific training.
+
+### Customizing LLMs
+- **In-Context Learning and Few-Shot Prompting**: Limited by model context length.
+- **Fine-Tuning**: Improves model performance and efficiency.
+- **Retrieval Augmented Generation (RAG)**: Querying knowledge databases for grounded responses.
+
+## Fine-Tuning and Inference
+
+### Fine-Tuning
+- **Definition**: Fine-tuning involves taking a pretrained foundational model and providing additional training using custom data.
+- **Purpose**: To improve model performance on specific tasks or domains by adapting the model to more specific data.
+- **Benefits**: Enhanced accuracy and efficiency for targeted applications.
+
+### Inference
+- **Definition**: In Machine Learning, inference refers to the process of using a trained model to make predictions or decisions based on new input data.
+- **With LLMs**: Inference involves the model receiving new text as input and generating output text based on what it has learned during training and fine-tuning.
+
+### T-Few Fine-Tuning
+- **Traditional Fine-Tuning**: Involves updating the weights of all (or most) layers in the model, leading to longer training times and higher inference costs.
+- **T-Few Fine-Tuning**: 
+  - **Selective Update**: Only a fraction of the model's weights are updated.
+  - **Parameter Efficient Fine-Tuning (PEFT)**: A more efficient approach, reducing both training time and serving (inference) costs.
+  
+### Reducing Inference Costs
+- **Inference Complexity**: Inference is computationally expensive.
+- **Resource Sharing**: Each hosting cluster can host one base model and up to N fine-tuned custom model endpoints, serving requests concurrently.
+- **Cost Efficiency**: Models sharing the same GPU resources reduce the expenses associated with inference, making the process more economical.
+
+# Explanation of Costing for Hosting and Fine-Tuning AI Clusters
+
+## Hosting Costs
+
+### Hosting Requirements:
+- **Minimum Units Required**: 744 units
+- **Endpoint Capacity**: 50
+
+### Calculating Hosting Costs:
+1. **Determine the number of units needed**: 
+   - Hosting requires a minimum of 744 units.
+
+2. **Estimate the cost**:
+   - Assuming the cost per unit for hosting is fixed, calculate the total cost by multiplying the number of units by the cost per unit (not provided in the context).
+
+## Fine-Tuning Costs
+
+### Fine-Tuning Requirements:
+- **Units Required for Fine-Tuning**: 1 unit (for setup)
+- **Units Required to Run Fine-Tuning**: 2 units
+- **Duration for Fine-Tuning**: 10 days
+- **Hours per Day**: 24 hours
+
+### Calculating Fine-Tuning Costs:
+1. **Determine the total number of units needed**:
+   - Fine-tuning requires 2 units to run.
+
+2. **Calculate the total cost for running fine-tuning**:
+   - **Total Hours**: 10 days * 24 hours/day = 240 hours
+   - **Total Units**: 2 units * 240 hours = 480 units
+
+### Total Cost Calculation:
+- The total cost for running the fine-tuning process for 10 days using 2 units would be 480 units.
+
+## Example Calculation for Total Cost (Assuming Cost Per Unit)
+
+To provide a complete picture, let's assume a hypothetical cost per unit.
+
+### Hypothetical Cost Per Unit:
+- **Cost Per Unit for Hosting**: $1
+- **Cost Per Unit for Fine-Tuning**: $1
+
+### Hosting Costs:
+- **Total Hosting Cost**: 744 units * $1/unit = $744
+
+### Fine-Tuning Costs:
+- **Total Fine-Tuning Cost**: 480 units * $1/unit = $480
+
+### Total Combined Cost:
+- **Total Cost**: $744 (hosting) + $480 (fine-tuning) = $1224
+
+This is an example to illustrate how to calculate the costs based on the given requirements. The actual cost will depend on the specific pricing per unit provided by the hosting and AI cluster service provider.
+
+In summary:
+- **Hosting requires**: 744 units
+- **Fine-tuning requires**: 480 units for 10 days of operation
+- **Endpoint capacity**: 50 units (for hosting purposes, capacity to handle 50 endpoints)
+
+This breakdown helps in understanding the resource requirements and the associated costs for both hosting and fine-tuning in a dedicated AI cluster setup.
+
+Fine-tuning a model involves adapting a pre-trained model (the base model) to a specific task or dataset. Here's a detailed explanation of each component mentioned:
+
+### Base Model
+The base model is the pre-trained model you start with for fine-tuning. It has already been trained on a large dataset and has learned a wide range of features. Examples of base models include BERT, GPT, and ResNet.
+
+### Fine-Tuning Method
+The fine-tuning method refers to the specific approach used to adapt the base model to the new task. Common methods include:
+
+- **Vanilla Fine-Tuning**: This involves unfreezing all or some of the layers of the pre-trained model and training it on the new dataset. 
+- **T-few (Transfer Learning with Few Examples)**: This method leverages few-shot learning techniques, where the model is fine-tuned on a smaller dataset with few examples per class. It often involves using advanced regularization techniques to prevent overfitting.
+
+### Training Methods
+- **Vanilla**: This refers to the straightforward fine-tuning method where the entire model or parts of it are trained on the new dataset without any special modifications.
+- **T-few**: This method specifically aims to perform well with a limited number of training examples by using techniques like prompt-tuning, meta-learning, or regularization.
+
+### Hyperparameters
+Hyperparameters are settings that are chosen before the training process and remain constant throughout. Important hyperparameters for fine-tuning include:
+
+- **Total Training Epochs**: The number of times the training algorithm will work through the entire training dataset. More epochs can lead to better learning, but too many can cause overfitting.
+- **Learning Rate**: The step size at each iteration while moving toward a minimum of the loss function. A higher learning rate can speed up training but might cause the model to converge to a suboptimal solution, while a lower learning rate might result in better convergence but will take longer.
+- **Training Batch Size**: The number of training examples utilized in one iteration. Larger batch sizes make the gradient estimation more accurate but require more memory.
+- **Early Stopping Patience**: The number of epochs to wait for an improvement in validation loss before stopping the training. This helps prevent overfitting by stopping training when performance on a validation set ceases to improve.
+- **Early Stopping Threshold**: The minimum change in the monitored quantity to qualify as an improvement. Smaller values mean more sensitivity to changes in validation loss.
+- **Log Model Metrics Interval in Steps**: The frequency (in steps) at which training metrics (like loss and accuracy) are logged. This helps in monitoring the training process.
+- **Number of Last Layers (Vanilla)**: The number of layers in the base model that are unfrozen and updated during training. Fine-tuning just the last few layers can be effective when the dataset is small.
+
+These configurations and hyperparameters are critical for tailoring the fine-tuning process to the specific requirements of your task and dataset, balancing between learning from new data and retaining the valuable knowledge encoded in the pre-trained base model.
+
+Understanding the results of fine-tuning a model is crucial for evaluating its performance. Two key metrics often used are accuracy and loss.
+
+### Accuracy
+**Definition**: Accuracy is the ratio of correctly predicted instances to the total instances. It is often expressed as a percentage.
+
+**Interpretation**:
+- **High Accuracy**: Indicates that the model is making correct predictions most of the time. For classification tasks, it means that the predicted labels match the true labels frequently.
+- **Low Accuracy**: Indicates that the model is often incorrect in its predictions. This might suggest the model is underfitting (not learning well enough) or that the data is noisy or imbalanced.
+
+**Use Case**: Accuracy is most useful when the classes are balanced. In cases of imbalanced classes, other metrics like precision, recall, and F1-score might be more informative.
+
+### Loss
+**Definition**: Loss is a measure of how well the model's predictions match the actual values. It quantifies the difference between the predicted values and the actual values using a loss function (e.g., mean squared error for regression, cross-entropy loss for classification).
+
+**Interpretation**:
+- **Low Loss**: Indicates that the model's predictions are close to the actual values, meaning the model is performing well.
+- **High Loss**: Indicates that the model's predictions are far from the actual values, suggesting poor performance.
+
+**Types of Loss Functions**:
+- **Cross-Entropy Loss**: Commonly used for classification tasks. It measures the difference between the predicted probability distribution and the actual distribution.
+- **Mean Squared Error (MSE)**: Often used for regression tasks. It calculates the average of the squares of the errors between predicted and actual values.
+
+**Use Case**: Loss is particularly important during the training process as it is the value that the optimization algorithm tries to minimize. Monitoring loss can help in understanding if the model is learning well or if it's overfitting/underfitting.
+
+### Analyzing Fine-Tuning Results
+- **Training vs. Validation Metrics**: Compare the accuracy and loss on the training set versus the validation set.
+  - **High Training Accuracy and Low Validation Accuracy**: Suggests overfitting.
+  - **Similar Training and Validation Accuracy**: Indicates a well-generalized model.
+  - **Low Training and Validation Accuracy**: Suggests underfitting.
+
+- **Learning Curves**: Plotting accuracy and loss over epochs for both training and validation sets can provide insights into the training process. 
+  - **Converging Curves**: Indicate good training progress.
+  - **Diverging Curves**: Suggest overfitting or other training issues.
+
+- **Early Stopping**: If using early stopping, check the point where training stopped to ensure it was at an optimal point where validation loss stopped improving.
+
+By analyzing accuracy and loss, you can assess the effectiveness of your fine-tuning process and make necessary adjustments to improve model performance.
+
+
+OCI Generative AI Security
+============================
+
+When using Oracle Cloud Infrastructure (OCI) for generative AI tasks, several security measures are in place to ensure the safety, integrity, and isolation of resources and data. Here are key aspects of OCI Generative AI Security:
+
+### GPU Isolation
+- **Isolated GPUs**: GPUs allocated for a customer's generative AI tasks are isolated from other GPUs. This ensures that the computational resources dedicated to your tasks are not shared with other customers, enhancing both performance and security. Each customer's workloads run on separate, isolated hardware, preventing unauthorized access or data leakage between different customers' environments.
+
+### Model Endpoints
+- **Secure Endpoints**: OCI provides secure endpoints for accessing AI models. These endpoints are protected using robust authentication and authorization mechanisms, ensuring that only authorized users and applications can interact with the models. Secure endpoints also support encryption in transit, safeguarding the data being sent to and received from the AI models.
+
+### Customer Data and Model Isolation
+- **Data Isolation**: Customer data used in training or inferencing is isolated from other customers' data. OCI ensures that your data remains private and secure, adhering to strict data protection and privacy policies. This isolation prevents accidental or intentional data breaches between different customers' datasets.
+- **Model Isolation**: The AI models you create or use are isolated from models belonging to other customers. This isolation ensures that your proprietary models are protected and cannot be accessed or tampered with by other customers.
+
+### OCI Security Services
+Generative AI in OCI leverages a range of security services provided by OCI to enhance overall security:
+- **Identity and Access Management (IAM)**: IAM enables fine-grained control over who can access OCI resources and what actions they can perform. This helps in managing user permissions and ensuring that only authorized personnel can access and manage AI tasks.
+- **Data Encryption**: OCI supports encryption of data at rest and in transit. This ensures that any data stored or transmitted as part of AI tasks is protected from unauthorized access and breaches.
+- **Network Security**: OCI provides virtual cloud networks (VCNs), security lists, and network security groups (NSGs) to control traffic flow and protect against unauthorized network access. This helps in creating secure, isolated networks for your AI workloads.
+- **Monitoring and Logging**: OCI includes monitoring and logging services to keep track of activity and detect any anomalies or security incidents. This allows for continuous monitoring of AI tasks and prompt response to potential security threats.
+- **Compliance and Governance**: OCI adheres to various industry standards and regulatory requirements, ensuring that your AI workloads comply with necessary legal and compliance standards.
+
+By implementing these security measures, OCI ensures that generative AI tasks are performed in a secure, isolated, and compliant environment, protecting both the computational resources and the data involved in AI processes.
+
+
+# Retrieval Augmented Generation (RAG)
+
+Retrieval Augmented Generation (RAG) is a method for generating text by leveraging additional information fetched from an external data source. The RAG model retrieves relevant documents and passes them to a sequence-to-sequence (seq2seq) model for text generation.
+
+## RAG Framework
+
+The RAG framework comprises three main components:
+
+1. **Retriever**: Sources relevant information from a large corpus or database.
+2. **Ranker**: Evaluates and prioritizes the information retrieved by the Retriever.
+3. **Generator**: Generates human-like text based on the retrieved and ranked information, along with the user's query.
+
+## RAG Techniques
+
+- **RAG Sequence Model**: Uses a sequence-to-sequence approach where the retrieval and generation are combined in a single model.
+- **RAG Token Model**: Utilizes token-level retrieval to enhance the generation process with finer granularity.
+
+## RAG Pipeline
+
+1. **Ingestion**:
+    - **Documents**: Source documents are collected.
+    - **Chunks**: Documents are divided into smaller, manageable chunks.
+    - **Embedding**: Chunks are transformed into embeddings (numerical representations).
+    - **Index**: Embeddings are stored in an index or database for efficient retrieval.
+
+2. **Retrieval**:
+    - **Query**: A query is made by the user.
+    - **Index**: The query is matched against the index.
+    - **Top K Results**: The top K most relevant results are retrieved.
+
+3. **Generation**:
+    - **Top K Results**: Retrieved results are passed to the generation model.
+    - **Response**: The model generates a response based on the top K results and the user's query.
+
+## RAG Applications
+
+- **Enhanced Prompt Generation**:
+    - **Prompt + Chat History**: Combines the current prompt with the chat history to create an enhanced prompt.
+    - **Embedding Mode**: Converts the enhanced prompt into embeddings.
+    - **Similarity Search**: Searches for similar embeddings in the database.
+    - **Augmented Prompt**: Combines the similar embeddings to create an augmented prompt.
+    - **LLM**: Passes the augmented prompt to a large language model (LLM) to generate a highly accurate response.
+
+## RAG Evaluation
+
+Evaluation of the RAG model involves assessing the following:
+
+1. **Query**: The initial user query.
+2. **Context**: The context retrieved by the model.
+3. **Response**: The generated response.
+
+Key evaluation metrics include:
+
+- **Context Relevance**: How relevant the retrieved context is to the query.
+- **Groundedness**: The degree to which the response is based on the retrieved information.
+- **Answer Relevance**: The overall relevance of the response to the user's query.
+
+# Vector Databases and RAG-Enhanced LLMs
+
+## LLM Versus LLM + RAG
+
+### LLM Without RAG
+- Relies on internal knowledge learned during pre-training on a large corpus of text.
+- May or may not use fine-tuning for specific tasks.
+- Limited by the static knowledge embedded during training, which can lead to outdated or incomplete information.
+
+### LLM With RAG
+- Utilizes an external database, specifically a vector database, to retrieve up-to-date and contextually relevant information.
+- Enhances the model’s responses by augmenting internal knowledge with external, dynamic data.
+
+## Vector Database Overview
+
+### Vector
+- A vector is a sequence of numbers, called dimensions, used to capture the important features of the data.
+- Generated using deep learning embedding models, vectors represent the semantic content of data rather than the underlying words or pixels.
+
+### Embedding Distance Metrics
+- **Dot Product**: Measures the similarity between two vectors.
+- **Cosine Distance**: Measures the cosine of the angle between two vectors, indicating their orientation.
+
+### Determining Similar Words
+- **K-nearest Neighbors (KNN)**: Finds the closest vectors to a given query vector.
+- **Approximate Nearest Neighbors (ANN)**: Algorithms designed to find near-optimal neighbors faster than exact KNN searches.
+  - Examples: HNSW, FAISS, ANNOY.
+
+## Vector Data Workflow
+
+1. **Vectors**: Data is converted into vectors using embedding models.
+2. **Indexing**: Vectors are indexed for efficient retrieval.
+3. **Vector Database**: Vectors are stored in a vector database.
+4. **Querying**: Queries are made to retrieve relevant vectors.
+5. **Post Processing**: Retrieved vectors are processed to generate responses or insights.
+
+### Examples of Vector Databases
+- Oracle
+- FAISS
+- Chroma
+- Weaviate
+- Pinecone
+
+## Key Considerations
+
+### Accuracy
+- Enhanced by retrieving and incorporating the most relevant and up-to-date information.
+
+### Latency
+- The speed of retrieval and generation can affect the overall performance.
+
+### Scalability
+- Ability to handle large volumes of data and queries efficiently.
+
+## Role of Vector Databases with LLMs
+
+- **Addressing Hallucination**: Reduces inaccuracies by supplementing the model’s responses with external, verifiable information.
+- **Augmenting the Prompt**: Enriches the input prompt with enterprise-specific data, leading to more relevant and context-aware responses.
+- **Cost-Effective**: Cheaper than fine-tuning the model for specific tasks, as it leverages existing knowledge and data.
+- **Real-Time Updates**: Ensures the model can access the latest information, providing up-to-date responses.
+
+# Keyword Search
+
+## Overview
+Keywords are specific words or phrases used to match the terms people are searching for. Keyword search is the simplest form of search, based on exact matches between the query terms and the content of documents.
+
+## Key Concepts
+
+### Exact Match
+- Keyword search relies on exact matches between the search terms and the content in documents.
+- It does not account for variations, synonyms, or the context in which terms appear.
+
+### Document Evaluation
+- Documents are evaluated based on the presence and frequency of the query terms.
+- A higher frequency of the query term in a document typically indicates greater relevance to the search query.
+
+### BM25 Algorithm
+- **BM25** (Best Matching 25) is a ranking function used by search engines to evaluate the relevance of documents based on keyword presence and frequency.
+- It considers factors such as term frequency, document length, and the inverse document frequency to rank documents.
+
+## Advantages of Keyword Search
+- **Simplicity**: Easy to implement and understand.
+- **Efficiency**: Fast retrieval times due to straightforward matching criteria.
+
+## Disadvantages of Keyword Search
+- **Lack of Context**: Does not account for the meaning or context of the terms.
+- **Limited Flexibility**: Exact matches required, so variations and synonyms might be missed.
+- **Relevance Issues**: High frequency of a term does not always equate to high relevance.
+
+## Applications
+- Basic search engines
+- Document retrieval systems
+- Initial filtering in more complex search pipelines
+
+## Example Workflow
+
+1. **Query Input**: User enters a search query with specific keywords.
+2. **Term Matching**: The system searches for documents containing the exact keywords.
+3. **Frequency Analysis**: Documents are ranked based on the frequency of the query terms.
+4. **Relevance Scoring**: BM25 or similar algorithms are used to score and rank the documents.
+5. **Result Display**: The most relevant documents are presented to the user based on their keyword search.
+
+## Enhancements to Keyword Search
+- **Synonym Expansion**: Including synonyms of the query terms to capture more relevant results.
+- **Stemming and Lemmatization**: Reducing words to their root forms to improve match rates.
+- **Advanced Ranking Algorithms**: Incorporating additional factors such as user behavior, document popularity, and content quality to refine search results.
+
+# Semantic Search Guide
+
+Semantic search enhances traditional keyword-based search methods by understanding the meaning and context behind the query, rather than merely matching words. This guide covers the key concepts of semantic search, including dense retrieval and reranking, as well as hybrid search.
+
+## Key Concepts
+
+### Semantic Search
+
+Semantic search focuses on retrieving information based on the meaning and intent of the query. This approach ensures that search results are more relevant to the user's actual needs.
+
+#### Benefits of Semantic Search
+- **Improved Relevance**: Results are more aligned with the user's intent.
+- **Context Awareness**: Understands the context of the query, leading to better search results.
+- **Natural Language Queries**: Handles natural language queries effectively, providing a more user-friendly search experience.
+
+### Dense Retrieval
+
+Dense retrieval is a method used in semantic search to find the most relevant documents or information by representing queries and documents as high-dimensional vectors (embeddings).
+
+#### How Dense Retrieval Works
+1. **Embedding Vectors**: Convert the query and documents into embedding vectors using a pre-trained language model (e.g., BERT, GPT).
+2. **Similarity Search**: Measure the similarity between the query vector and document vectors using distance metrics like cosine similarity.
+3. **Retrieve Top Matches**: Retrieve documents with the highest similarity scores to the query vector.
+
+#### Example
+1. **Query**: "Best places to visit in Europe"
+2. **Embedding**: Convert the query into an embedding vector.
+3. **Similarity Search**: Find documents whose embedding vectors are closest to the query vector.
+4. **Results**: Return documents about popular travel destinations in Europe.
+
+### Reranking
+
+Reranking is a process that assigns a relevance score to initial search results based on a deeper understanding of the query and the content, often implemented through LLMs.
+
+#### How Reranking Works
+1. **Initial Search**: Perform an initial search using traditional methods or dense retrieval.
+2. **Relevance Scoring**: Use an LLM to assign a relevance score to each result based on the query's context and intent.
+3. **Sort Results**: Sort the initial search results according to their relevance scores.
+4. **Return Refined Results**: Provide the user with the most relevant results at the top.
+
+#### Example
+1. **Query**: "How to bake a chocolate cake"
+2. **Initial Search**: Retrieve documents containing "bake" and "chocolate cake."
+3. **Relevance Scoring**: Use an LLM to score the relevance of each document based on the completeness and quality of the baking instructions.
+4. **Sorted Results**: Display recipes with the highest relevance scores first.
+
+### Hybrid Search
+
+Hybrid search combines traditional keyword-based search with semantic search techniques to leverage the strengths of both approaches.
+
+#### How Hybrid Search Works
+1. **Keyword Search**: Perform a traditional keyword-based search to find initial results.
+2. **Dense Retrieval**: Enhance the results by adding semantically relevant documents using dense retrieval.
+3. **Reranking**: Apply reranking to the combined results to prioritize the most contextually relevant documents.
+
+#### Example
+1. **Query**: "Latest research on climate change"
+2. **Keyword Search**: Retrieve documents containing "latest research" and "climate change."
+3. **Dense Retrieval**: Add documents that are semantically similar to the query.
+4. **Reranking**: Use an LLM to assign relevance scores and sort the results accordingly.
+
+## Implementing Semantic Search
+
+To implement semantic search, follow these steps:
+
+1. **Choose a Pre-trained Language Model**: Select a model such as BERT, GPT, or another suitable model for creating embeddings.
+2. **Convert Queries and Documents to Embeddings**: Use the chosen model to generate embedding vectors for both queries and documents.
+3. **Similarity Search**: Implement a method to calculate similarity between the query and document embeddings.
+4. **Initial Search and Reranking**: Perform an initial search and use an LLM to rerank the results based on relevance.
+5. **Combine Techniques for Hybrid Search**: Integrate traditional keyword search with dense retrieval and reranking to create a hybrid search solution.
+
+### Example Code
+
+Here's a simple example of implementing dense retrieval using a pre-trained language model:
+
+```python
+from sentence_transformers import SentenceTransformer, util
+
+# Load pre-trained model
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Example documents
+documents = [
+    "Paris is the capital of France.",
+    "Berlin is the capital of Germany.",
+    "Madrid is the capital of Spain."
+]
+
+# Convert documents to embeddings
+document_embeddings = model.encode(documents)
+
+# Query
+query = "What is the capital of Germany?"
+query_embedding = model.encode(query)
+
+# Perform similarity search
+similarities = util.pytorch_cos_sim(query_embedding, document_embeddings)
+top_k = similarities.topk(1)
+
+# Retrieve top match
+top_document = documents[top_k[1].item()]
+print(f"Top match: {top_document}")
+```
+
+This example demonstrates how to convert text into embeddings and perform a similarity search to find the most relevant document based on the query.
+
+## Conclusion
+
+Semantic search, dense retrieval, reranking, and hybrid search techniques collectively enhance the search experience by focusing on the meaning and context of queries. By leveraging these techniques, you can build more accurate and user-friendly search systems.
+
+
+# LangChain and LLM Integration Guide
+
+This guide provides an overview of integrating LangChain with Large Language Models (LLMs) and chat models, setting up the development environment, and creating chains using LangChain's framework.
+
+## Overview of LangChain Integration
+
+### Types of Models
+
+LangChain integrates with two main types of models: LLMs and chat models. These models are defined by their input and output types.
+
+#### Large Language Models (LLMs)
+
+- **Input**: A string prompt
+- **Output**: A string completion
+
+Example: Input a question as a string, and LLM will return an answer as a string.
+
+#### Chat Models
+
+- **Input**: A list of chat messages
+- **Output**: A message
+
+Example: Input a list that includes the latest question and prior questions and answers, and the chat model will return an AI message.
+
+### Prompt Templates
+
+LangChain provides pre-built classes called prompt templates to create prompts for LLMs and chat models.
+
+#### String Prompt Template
+
+Creates input from a combination of fixed text input and variables.
+
+Example:
+- Template: "Tell me a [adjective] joke about [content]."
+- Input: adjective = "funny", content = "politics"
+- Result: "Tell me a funny joke about politics."
+
+#### Chat Prompt Template
+
+Inputs a list of chat messages to a chat model. Each chat message consists of a role and content.
+
+Example:
+- Roles: human, AI
+- Chat messages: [{"role": "human", "content": "What's the weather like today?"}, {"role": "AI", "content": "The weather is sunny and warm."}]
+
+### Creating Chains
+
+LangChain provides a framework for creating chains of components, including LLMs and other types of components. Chains can be composed in two ways:
+
+1. **LangChain Expression Language (LCEL)**: A declarative and preferred way to create chains.
+2. **LangChain Python Classes**: Using classes like `LLMChain` to create chains programmatically.
+
+## Setting Up the Development Environment
+
+Follow these steps to set up the Python development environment:
+
+1. **Install an IDE**: 
+   - Recommended: JetBrains PyCharm Community Edition
+   - Any other Python IDE can be used.
+
+2. **Create a New Project**: 
+   - In PyCharm, create a new project.
+   - Choose to create a virtual environment to manage dependencies at a project level.
+
+3. **Install Necessary Python Packages**:
+   - Packages: LangChain, OCI, Oracle IDEs, and others.
+   - Use the command:
+     ```bash
+     pip install langchain oci oracle-ide
+     ```
+
+4. **Generate Config and Key Files**:
+   - Use OCI IAM to generate config and key files.
+   - Download these files to your local machine.
+   - Place the files in the `.oci` folder of your home directory.
+
+5. **Write and Run Code**:
+   - Use the IDE to write and run your code.
+   - Follow the demo to explore creating a simple chain using prompts and LLMs.
+
+## Example: Creating a Simple Chain
+
+Here is a simple example to demonstrate creating a chain using prompts and LLMs:
+
+```python
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
+
+# Define a string prompt template
+template = PromptTemplate(
+    input_variables=["adjective", "content"],
+    template="Tell me a {adjective} joke about {content}."
+)
+
+# Create an instance of the LLM
+llm = OpenAI(api_key='your_openai_api_key')
+
+# Create the chain
+chain = LLMChain(llm=llm, prompt_template=template)
+
+# Run the chain with input variables
+result = chain.run({"adjective": "funny", "content": "politics"})
+
+print(result)
+```
+
+## Conclusion
+
+By following this guide, you can integrate LangChain with LLMs and chat models, set up your development environment, and create complex chains to leverage the full potential of generative AI tasks using OCI and LangChain.
+
+# Memory in Chatbots and LangChain
+
+Memory in the context of chatbots and LangChain refers to the ability to store and retrieve information from past interactions. This allows the chatbot to maintain context and provide more coherent and relevant responses over a conversation. Here's a detailed overview of how memory works and its various types.
+
+## Understanding Memory in Chatbots
+
+### Storing Information
+
+Memory is used to store past interactions, such as:
+- **Questions Asked**: Previous queries from the user.
+- **Responses Given**: Answers provided by the chatbot.
+
+This collection of interactions is known as **chat history**.
+
+### Interaction with Memory
+
+Chains that support memory interact with it twice during a conversation:
+1. **Retrieval**: When a question is asked, the chain retrieves the conversation history from the memory using a key and sends it to the LLM (Large Language Model) along with the new question. This provides additional context to the LLM, allowing it to generate a more informed response.
+2. **Storage**: After the LLM generates a new response, the chain updates the memory with the latest question and answer, ensuring the memory is current.
+
+### Memory Types in LangChain
+
+LangChain offers various types of memory, depending on what is returned from the memory:
+- **Full Memory**: Returns the entire conversation history.
+- **Summary Memory**: Returns a summary of the conversation history.
+
+### Managing Memory for Multiple Users
+
+When multiple users interact with a chatbot, each user will have different questions and responses. To manage this:
+- **User-Specific Sessions**: Each user has a separate session, typically managed by the user interface framework, such as Streamlit. The chat history is stored in a user-specific session, ensuring that each user's interactions are kept distinct.
+
+### Example: Memory in Action
+
+Here's an example of how memory can be implemented in a chatbot using LangChain and a user interface like Streamlit:
+
+#### Setting Up the Environment
+
+1. **Install necessary packages**:
+    ```bash
+    pip install langchain streamlit
+    ```
+
+2. **Implementing Memory in a Chatbot**:
+
+```python
+import streamlit as st
+from langchain.chains import ConversationChain
+from langchain.memory import Memory
+from langchain.llms import OpenAI
+
+# Initialize memory
+memory = Memory()
+
+# Create a conversation chain
+llm = OpenAI(api_key='your_openai_api_key')
+conversation = ConversationChain(llm=llm, memory=memory)
+
+# Streamlit user interface
+st.title("Chatbot with Memory")
+
+# Retrieve user-specific session state
+if 'chat_history' not in st.session_state:
+    st.session_state['chat_history'] = []
+
+# Display chat history
+for message in st.session_state['chat_history']:
+    st.write(message['role'] + ": " + message['content'])
+
+# Input for new question
+user_input = st.text_input("You:", key="input")
+
+if user_input:
+    # Add user message to chat history
+    st.session_state['chat_history'].append({"role": "User", "content": user_input})
+
+    # Retrieve memory and ask the question
+    response = conversation.run(user_input)
+
+    # Add chatbot response to chat history
+    st.session_state['chat_history'].append({"role": "Chatbot", "content": response})
+
+    # Update memory with the latest interaction
+    memory.write(user_input, response)
+
+    # Refresh the page to display the new chat history
+    st.experimental_rerun()
+```
+
+### How it Works
+
+- **Streamlit User Interface**: The Streamlit framework is used to create a simple chat interface.
+- **Session State**: User-specific chat history is stored in Streamlit's session state.
+- **Memory Initialization**: Memory is initialized to store and retrieve past interactions.
+- **Conversation Chain**: A conversation chain is created using LangChain's `ConversationChain` class.
+- **User Interaction**: User input is retrieved, and the conversation chain interacts with the LLM to get a response. Both the user input and the chatbot response are stored in memory and displayed in the chat history.
+
+## Conclusion
+
+Memory in chatbots, facilitated by LangChain, plays a crucial role in maintaining context across conversations, leading to more meaningful and coherent interactions. By leveraging various memory types and managing user-specific sessions, chatbots can provide a personalized and context-aware user experience.
+
+# Retrieval Augmented Generation (RAG) with LangChain
+
+Large Language Models (LLMs) are powerful tools trained on vast amounts of data, but they are limited by the data they were initially trained on. To enable LLMs to answer questions about custom data, we need to provide this data to them. This process is known as Retrieval Augmented Generation (RAG). RAG involves inserting relevant custom data into the prompt, allowing the LLM to generate more specific and accurate answers. This guide explains how to implement RAG, which is split into two main parts: indexing and retrieval, and generation.
+
+## Overview of Retrieval Augmented Generation
+
+### Indexing
+
+1. **Loading Custom Documents**:
+   - Use document loaders in LangChain to load custom data. Supported formats include PDF, CSV, HTML, JSON, etc.
+
+2. **Splitting Documents**:
+   - Split documents into smaller pieces to facilitate indexing and passing to LLMs.
+
+3. **Embedding and Storing**:
+   - Convert the split documents into embedding vectors.
+   - Store these vectors in a vector store for efficient retrieval.
+
+### Retrieval and Generation
+
+1. **Query Processing**:
+   - When a user query arrives, search for and retrieve relevant documents from the vector store.
+
+2. **Augmenting the Query**:
+   - Provide the retrieved documents to the LLM along with the user query.
+
+3. **Generating the Response**:
+   - The LLM uses the augmented information to generate a more specific and accurate response.
+
+## Implementation Steps
+
+### Step 1: Install Required Packages
+
+Ensure you have the necessary packages installed:
+
+```bash
+pip install langchain
+pip install sentence-transformers
+pip install faiss-cpu  # for vector store
+```
+
+### Step 2: Load and Split Documents
+
+Load your custom documents and split them into smaller chunks.
+
+```python
+from langchain.document_loaders import PDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+# Load the document
+loader = PDFLoader(file_path="path/to/your/document.pdf")
+documents = loader.load()
+
+# Split the document into smaller chunks
+splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+split_docs = splitter.split_documents(documents)
+```
+
+### Step 3: Embed and Store Documents
+
+Embed the split documents and store them in a vector store for efficient retrieval.
+
+```python
+from sentence_transformers import SentenceTransformer
+import faiss
+import numpy as np
+
+# Load a pre-trained embedding model
+embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Embed the split documents
+document_embeddings = embedding_model.encode([doc['text'] for doc in split_docs])
+
+# Initialize FAISS index
+index = faiss.IndexFlatL2(document_embeddings.shape[1])
+index.add(np.array(document_embeddings))
+
+# Save the index
+faiss.write_index(index, "document_index.faiss")
+```
+
+### Step 4: Retrieve Relevant Documents
+
+Retrieve relevant documents based on the user query.
+
+```python
+# Load the index
+index = faiss.read_index("document_index.faiss")
+
+def retrieve_documents(query, top_k=5):
+    query_embedding = embedding_model.encode([query])
+    distances, indices = index.search(np.array(query_embedding), top_k)
+    return [split_docs[i] for i in indices[0]]
+
+# Example query
+query = "Explain the impact of climate change"
+relevant_docs = retrieve_documents(query)
+```
+
+### Step 5: Augment Query and Generate Response
+
+Augment the user query with the retrieved documents and generate a response using the LLM.
+
+```python
+from langchain.llms import OpenAI
+from langchain.chains import RetrievalQAChain
+
+# Initialize the LLM
+llm = OpenAI(api_key='your_openai_api_key')
+
+# Create a retrieval QA chain
+retrieval_qa_chain = RetrievalQAChain(llm=llm, retriever=retrieve_documents)
+
+# Generate the response
+response = retrieval_qa_chain.run(query)
+print(response)
+```
+
+## Conclusion
+
+Retrieval Augmented Generation (RAG) enhances the capabilities of LLMs by providing them with custom data relevant to the user's query. By following the steps outlined in this guide—loading, splitting, embedding, and retrieving documents—you can implement RAG to enable more specific and accurate responses from your AI applications. LangChain provides the necessary tools and framework to seamlessly integrate RAG into your projects.
+
+# Combining Retrieval Augmented Generation (RAG) with Memory in LangChain
+
+Combining Retrieval Augmented Generation (RAG) with memory enhances the capabilities of chatbots by providing them with custom data relevant to the user's query while maintaining the context of previous interactions. This guide will explain how to integrate both RAG and memory using LangChain to build a robust and context-aware chatbot.
+
+## Key Concepts
+
+### Retrieval Augmented Generation (RAG)
+RAG involves two main steps:
+1. **Indexing and Retrieval**:
+   - Loading custom documents.
+   - Splitting documents into smaller chunks.
+   - Embedding and storing documents in a vector store.
+   - Retrieving relevant documents based on user queries.
+
+2. **Generation**:
+   - Augmenting the user query with retrieved documents.
+   - Generating a response using an LLM.
+
+### Memory
+Memory stores past interactions, enabling the chatbot to maintain context and provide coherent responses over the course of a conversation.
+
+## Implementation Steps
+
+### Step 1: Install Required Packages
+
+Ensure you have the necessary packages installed:
+
+```bash
+pip install langchain
+pip install sentence-transformers
+pip install faiss-cpu  # for vector store
+pip install streamlit
+```
+
+### Step 2: Load, Split, Embed, and Store Documents
+
+Load your custom documents, split them into smaller chunks, embed them, and store them in a vector store for efficient retrieval.
+
+```python
+from langchain.document_loaders import PDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from sentence_transformers import SentenceTransformer
+import faiss
+import numpy as np
+
+# Load the document
+loader = PDFLoader(file_path="path/to/your/document.pdf")
+documents = loader.load()
+
+# Split the document into smaller chunks
+splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+split_docs = splitter.split_documents(documents)
+
+# Load a pre-trained embedding model
+embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Embed the split documents
+document_embeddings = embedding_model.encode([doc['text'] for doc in split_docs])
+
+# Initialize FAISS index
+index = faiss.IndexFlatL2(document_embeddings.shape[1])
+index.add(np.array(document_embeddings))
+
+# Save the index
+faiss.write_index(index, "document_index.faiss")
+```
+
+### Step 3: Define a Function for Document Retrieval
+
+Define a function to retrieve relevant documents based on the user query.
+
+```python
+# Load the index
+index = faiss.read_index("document_index.faiss")
+
+def retrieve_documents(query, top_k=5):
+    query_embedding = embedding_model.encode([query])
+    distances, indices = index.search(np.array(query_embedding), top_k)
+    return [split_docs[i] for i in indices[0]]
+
+# Example query
+query = "Explain the impact of climate change"
+relevant_docs = retrieve_documents(query)
+```
+
+### Step 4: Implement Memory for Context
+
+Implement memory to store and retrieve past interactions, maintaining context throughout the conversation.
+
+```python
+from langchain.memory import ConversationMemory
+
+# Initialize memory
+memory = ConversationMemory()
+
+# Function to update memory with new interaction
+def update_memory(query, response):
+    memory.write(query, response)
+```
+
+### Step 5: Combine RAG with Memory
+
+Combine RAG with memory to provide context-aware and data-augmented responses.
+
+```python
+from langchain.llms import OpenAI
+from langchain.chains import RetrievalQAChain
+import streamlit as st
+
+# Initialize the LLM
+llm = OpenAI(api_key='your_openai_api_key')
+
+# Create a retrieval QA chain
+retrieval_qa_chain = RetrievalQAChain(llm=llm, retriever=retrieve_documents, memory=memory)
+
+# Streamlit user interface
+st.title("RAG + Memory Chatbot")
+
+# Retrieve user-specific session state
+if 'chat_history' not in st.session_state:
+    st.session_state['chat_history'] = []
+
+# Display chat history
+for message in st.session_state['chat_history']:
+    st.write(message['role'] + ": " + message['content'])
+
+# Input for new question
+user_input = st.text_input("You:", key="input")
+
+if user_input:
+    # Add user message to chat history
+    st.session_state['chat_history'].append({"role": "User", "content": user_input})
+
+    # Retrieve relevant documents
+    relevant_docs = retrieve_documents(user_input)
+
+    # Retrieve memory and ask the question with augmented data
+    augmented_query = user_input + " " + " ".join([doc['text'] for doc in relevant_docs])
+    response = retrieval_qa_chain.run(augmented_query)
+
+    # Add chatbot response to chat history
+    st.session_state['chat_history'].append({"role": "Chatbot", "content": response})
+
+    # Update memory with the latest interaction
+    update_memory(user_input, response)
+
+    # Refresh the page to display the new chat history
+    st.experimental_rerun()
+```
+
+## Conclusion
+
+By combining Retrieval Augmented Generation (RAG) with memory, you can create a chatbot that not only provides accurate and specific answers based on custom data but also maintains the context of past interactions. This approach enhances the chatbot's ability to deliver coherent and relevant responses, leading to a more effective and user-friendly experience. LangChain provides the necessary tools to integrate these capabilities seamlessly into your projects.
+
+# Chatbot Technical Architecture for RAG and Memory
+
+## Overview
+
+This architecture involves three main components:
+1. **Indexing**: Preparing the custom data for efficient retrieval.
+2. **Retrieval and Generation**: Finding relevant data in response to a user's query and generating a coherent response using an LLM.
+3. **Memory Management**: Storing and utilizing past interactions to maintain context.
+
+## Detailed Steps
+
+### 1. Indexing
+
+**Step 1: Load Custom Documents**
+- **Objective**: Gather all the documents you want the chatbot to reference.
+- **Actions**: Use various document loaders to ingest data in different formats such as PDFs, CSVs, HTML, JSON, etc.
+
+**Step 2: Split Documents**
+- **Objective**: Break down large documents into smaller, manageable chunks.
+- **Actions**: Implement a text splitter to divide documents into sections that can be efficiently processed and indexed.
+
+**Step 3: Embed Documents**
+- **Objective**: Convert text chunks into embedding vectors for efficient retrieval.
+- **Actions**: Use an embedding model to create vector representations of the document chunks.
+
+**Step 4: Store Embeddings**
+- **Objective**: Store the embedding vectors in a searchable vector store.
+- **Actions**: Use a vector store like FAISS or similar tools to store and index the embeddings for quick retrieval during query processing.
+
+### 2. Retrieval and Generation
+
+**Step 5: Retrieve Relevant Documents**
+- **Objective**: Find the most relevant document chunks in response to a user's query.
+- **Actions**: Convert the user query into an embedding vector and search the vector store to find the closest matches.
+
+**Step 6: Augment Query with Retrieved Data**
+- **Objective**: Provide additional context to the LLM by including relevant document chunks.
+- **Actions**: Combine the retrieved document chunks with the user query to create an augmented query.
+
+**Step 7: Generate Response**
+- **Objective**: Use the LLM to generate a coherent and contextually relevant response.
+- **Actions**: Feed the augmented query into the LLM to produce the response.
+
+### 3. Memory Management
+
+**Step 8: Initialize Memory**
+- **Objective**: Set up a mechanism to store past interactions.
+- **Actions**: Use a memory module to keep track of user queries and corresponding responses.
+
+**Step 9: Retrieve Past Interactions**
+- **Objective**: Maintain context by retrieving relevant past interactions.
+- **Actions**: Before processing a new query, retrieve the conversation history related to the user.
+
+**Step 10: Update Memory**
+- **Objective**: Keep the memory updated with the latest interactions.
+- **Actions**: After generating a response, store the new query-response pair in the memory.
+
+### 4. Combining RAG with Memory
+
+**Step 11: Integrate Memory with Retrieval and Generation**
+- **Objective**: Use both past interactions and retrieved documents to generate responses.
+- **Actions**: Combine the conversation history from memory with the retrieved document chunks to create a comprehensive augmented query.
+
+**Step 12: Generate Context-Aware Responses**
+- **Objective**: Produce responses that are informed by both the current query and the context of past interactions.
+- **Actions**: Feed the augmented query into the LLM, ensuring it has the necessary context to generate a relevant response.
+
+## Summary
+
+- **Indexing**: Load, split, embed, and store documents for efficient retrieval.
+- **Retrieval and Generation**: Retrieve relevant document chunks and generate responses using an LLM.
+- **Memory Management**: Store and retrieve past interactions to maintain conversation context.
+- **Integration**: Combine RAG with memory to enhance the chatbot's ability to generate contextually aware and accurate responses.
+
+By following these steps, you can build a robust chatbot that leverages both custom data and past interactions to provide relevant and coherent responses to user queries.
