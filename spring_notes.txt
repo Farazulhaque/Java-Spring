@@ -346,3 +346,664 @@ protected void configure(HttpSecurity http) throws Exception {
    - **Blocked Request**: If the request fails any of the security checks, an appropriate error response is sent back, such as a redirect to the login page, or an error page indicating access is denied.
 
 In summary, Spring Security intercepts and processes requests using a well-defined chain of filters that apply authentication, authorization, and other security checks, ensuring that only legitimate requests are allowed to proceed to the application's business logic.
+
+Different Type of Cache Mechanisms Available in Spring Boot
+===========================================================
+Spring Boot offers several caching mechanisms to optimize the performance of applications by storing frequently accessed data in memory. Here’s an overview of the key caching mechanisms available in Spring Boot:
+
+### 1. **In-Memory Caching**
+   - **Simple Cache (ConcurrentMapCache)**
+     - This is the default caching implementation in Spring Boot.
+     - It uses a `ConcurrentHashMap` to store cache entries.
+     - It is lightweight and easy to set up, but the cache is lost when the application restarts.
+     - Suitable for small, simple applications or caching during runtime.
+
+     **Example:**
+     ```java
+     @Cacheable("books")
+     public Book findBookByIsbn(String isbn) {
+         // fetch book details from database
+     }
+     ```
+
+### 2. **Ehcache**
+   - Ehcache is a popular, robust, and widely used caching library.
+   - It supports both in-memory and disk-based storage, with optional eviction strategies like LRU (Least Recently Used).
+   - Suitable for large-scale applications where distributed caching and persistent caching are needed.
+   - Spring Boot integrates with Ehcache easily by including the necessary dependency.
+
+     **Example (Ehcache Configuration):**
+     ```xml
+     <ehcache>
+         <cache name="books"
+                maxEntriesLocalHeap="1000"
+                timeToLiveSeconds="600">
+         </cache>
+     </ehcache>
+     ```
+
+### 3. **Hazelcast**
+   - Hazelcast is a distributed in-memory data grid that supports caching.
+   - It provides high availability, scalability, and fast access to cached data across multiple nodes.
+   - Hazelcast allows you to use distributed caching across a cluster of applications.
+
+     **Example (Hazelcast Configuration in `application.yml`):**
+     ```yaml
+     spring:
+       cache:
+         hazelcast:
+           config: classpath:hazelcast.xml
+     ```
+
+### 4. **Caffeine Cache**
+   - Caffeine is an in-memory caching library known for high performance.
+   - It offers features like automatic eviction, size-based cache, and time-based expiration (TTL).
+   - It’s more efficient than `ConcurrentMapCache` and is ideal for performance-sensitive applications.
+
+     **Example (Caffeine Configuration):**
+     ```yaml
+     spring:
+       cache:
+         caffeine:
+           spec: maximumSize=500,expireAfterWrite=10m
+     ```
+
+### 5. **Redis Cache**
+   - Redis is an open-source, in-memory key-value data store often used as a cache.
+   - Spring Boot integrates with Redis for distributed caching that persists even if the application restarts.
+   - It’s ideal for distributed systems where the cache needs to be shared across multiple instances of an application.
+
+     **Example:**
+     ```yaml
+     spring:
+       cache:
+         type: redis
+       redis:
+         host: localhost
+         port: 6379
+     ```
+
+### 6. **Guava Cache**
+   - Guava Cache is a simple caching library from Google, similar to Caffeine but less feature-rich.
+   - It supports basic caching with time-based expiration and size-based eviction policies.
+
+     **Example (Guava Cache in Java):**
+     ```java
+     @Bean
+     public CacheManager cacheManager() {
+         GuavaCacheManager cacheManager = new GuavaCacheManager("books");
+         cacheManager.setCacheBuilder(CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES));
+         return cacheManager;
+     }
+     ```
+
+### 7. **JCache (JSR-107)**
+   - JCache is a standard API for caching in Java, and Spring Boot supports its use via the `javax.cache` package.
+   - You can plug in different caching implementations like Ehcache, Hazelcast, or others that support the JCache API.
+   - It’s useful if you want to write vendor-agnostic caching code.
+
+     **Example (JCache Configuration):**
+     ```java
+     @Cacheable(cacheNames = "books", cacheManager = "jCacheManager")
+     public Book findBookByIsbn(String isbn) {
+         // fetch book from database
+     }
+     ```
+
+### 8. **No-Op Cache**
+   - The "No-Op" cache is a dummy cache where no actual caching happens.
+   - This is useful for testing purposes where you want to disable caching without removing `@Cacheable` annotations.
+
+     **Example (No-Op Cache Configuration):**
+     ```yaml
+     spring:
+       cache:
+         type: none
+     ```
+
+---
+
+### Key Annotations Used in Spring Boot Caching:
+1. **@Cacheable**: Used to indicate that the result of a method should be cached.
+   - Example: `@Cacheable("books")`
+   
+2. **@CacheEvict**: Used to clear the cache for a particular key or all entries.
+   - Example: `@CacheEvict(value = "books", allEntries = true)`
+   
+3. **@CachePut**: Updates the cache with the new result after the method execution.
+   - Example: `@CachePut(value = "books", key = "#isbn")`
+   
+4. **@Caching**: Used to group multiple cache operations like `@Cacheable`, `@CachePut`, and `@CacheEvict`.
+   - Example: 
+     ```java
+     @Caching(evict = { @CacheEvict("books"), @CacheEvict("authors") })
+     ```
+
+### Choosing the Right Cache:
+- **In-Memory Cache** (Simple Cache, Caffeine) is ideal for single-instance applications.
+- **Distributed Cache** (Redis, Hazelcast, Ehcache) is better for multi-instance or microservice-based architectures where you need data to persist across application restarts or across different nodes in a cluster.
+
+What is the significance of the @Autowired annotation in Spring Boot Application?
+================================================================================
+
+The `@Autowired` annotation in Spring Boot (and Spring Framework) is used for **Dependency Injection (DI)**, which is a key design principle that allows the Spring container to manage the creation and injection of dependent objects (beans) into a class, without the class needing to explicitly instantiate them. This promotes loose coupling and makes the code more modular, testable, and maintainable.
+
+Here’s the significance of `@Autowired`:
+
+### 1. **Automatic Dependency Injection**
+   - When you use `@Autowired`, Spring automatically detects the required bean and injects it into the class where it’s annotated.
+   - You don’t need to manually create or initialize the object; Spring takes care of that based on the application's context.
+   - This simplifies code by eliminating boilerplate code for creating and managing dependencies.
+
+   **Example:**
+   ```java
+   @Service
+   public class UserService {
+   
+       @Autowired
+       private UserRepository userRepository;  // Automatically injected
+   
+       public List<User> getAllUsers() {
+           return userRepository.findAll();  // No need to instantiate userRepository
+       }
+   }
+   ```
+
+### 2. **Constructor, Setter, or Field Injection**
+   The `@Autowired` annotation can be used in different places to inject dependencies.
+
+   - **Constructor Injection (Preferred)**: Dependency is injected through the constructor. This approach is recommended for mandatory dependencies and makes the object immutable after construction.
+     
+     **Example:**
+     ```java
+     @Service
+     public class UserService {
+     
+         private final UserRepository userRepository;
+     
+         @Autowired
+         public UserService(UserRepository userRepository) {  // Dependency injected via constructor
+             this.userRepository = userRepository;
+         }
+     }
+     ```
+
+   - **Setter Injection**: Dependency is injected via a setter method. This is useful when the dependency is optional or can be changed after object construction.
+     
+     **Example:**
+     ```java
+     @Service
+     public class UserService {
+     
+         private UserRepository userRepository;
+     
+         @Autowired
+         public void setUserRepository(UserRepository userRepository) {
+             this.userRepository = userRepository;
+         }
+     }
+     ```
+
+   - **Field Injection**: Dependency is injected directly into the field. This is less recommended because it makes unit testing harder (as the field is private and final) and is less flexible than constructor injection.
+     
+     **Example:**
+     ```java
+     @Service
+     public class UserService {
+     
+         @Autowired
+         private UserRepository userRepository;  // Dependency injected into the field
+     }
+     ```
+
+### 3. **Handling Multiple Beans**
+   If Spring finds multiple beans of the same type, it may cause ambiguity. You can resolve this by:
+   - **@Qualifier**: Used alongside `@Autowired` to specify which exact bean to inject if multiple beans of the same type are available.
+   - **@Primary**: Marks a bean as the primary candidate when multiple beans are available for injection.
+
+   **Example with @Qualifier:**
+   ```java
+   @Autowired
+   @Qualifier("mySpecialRepository")
+   private UserRepository userRepository;
+   ```
+
+   **Example with @Primary:**
+   ```java
+   @Primary
+   @Repository
+   public class DefaultUserRepository implements UserRepository {
+       // Implementation details
+   }
+   ```
+
+### 4. **Injecting Collections**
+   `@Autowired` can also be used to inject collections of beans. Spring will inject all beans of a particular type into a list, set, or other collection.
+
+   **Example:**
+   ```java
+   @Service
+   public class NotificationService {
+
+       @Autowired
+       private List<NotificationSender> notificationSenders;  // Injects all NotificationSender beans
+
+       public void sendNotifications() {
+           for (NotificationSender sender : notificationSenders) {
+               sender.send();
+           }
+       }
+   }
+   ```
+
+### 5. **Optional Dependencies**
+   You can inject optional dependencies by using `@Autowired(required = false)`. If the bean is not found, Spring will not throw an exception.
+
+   **Example:**
+   ```java
+   @Autowired(required = false)
+   private UserPreferenceService userPreferenceService;  // This bean is optional
+   ```
+
+### 6. **Enabling @Autowired**
+   The `@Autowired` feature is enabled through component scanning, which is usually done via annotations like `@SpringBootApplication`, `@ComponentScan`, or other stereotype annotations like `@Component`, `@Service`, `@Repository`, etc.
+
+### Summary of `@Autowired` Benefits:
+- **Decoupling**: Reduces tight coupling between components, making it easier to test, manage, and scale.
+- **Lifecycle Management**: Spring manages the lifecycle of beans, ensuring efficient resource usage.
+- **Flexibility**: Provides various ways to inject dependencies, such as field, constructor, and setter-based injection.
+- **Easy to Use**: The annotation simplifies the process of dependency injection, avoiding manual bean creation.
+
+How can you handle exception in spring boot application?
+========================================================
+Handling exceptions in a Spring Boot application is critical for ensuring smooth user experience and proper error management. Spring Boot provides several mechanisms for handling exceptions both globally and locally. Here's an overview of how to handle exceptions in a Spring Boot application:
+
+### 1. **Using `@ExceptionHandler` for Local Exception Handling**
+   The `@ExceptionHandler` annotation is used to handle exceptions at the controller level. It allows you to catch specific exceptions in a method and return a custom response.
+
+   **Example:**
+   ```java
+   @RestController
+   public class UserController {
+
+       @GetMapping("/users/{id}")
+       public User getUserById(@PathVariable Long id) {
+           return userService.findById(id)
+                             .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+       }
+
+       @ExceptionHandler(UserNotFoundException.class)
+       public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
+           return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+       }
+   }
+   ```
+
+   In this example:
+   - If `UserNotFoundException` is thrown in the controller method, the `handleUserNotFound` method will handle it and return a `404 Not Found` response with a custom message.
+
+### 2. **Global Exception Handling using `@ControllerAdvice`**
+   If you want to handle exceptions across the entire application, you can use `@ControllerAdvice`. This allows you to centralize your exception handling logic and apply it globally.
+
+   **Example:**
+   ```java
+   @ControllerAdvice
+   public class GlobalExceptionHandler {
+
+       @ExceptionHandler(UserNotFoundException.class)
+       public ResponseEntity<String> handleUserNotFound(UserNotFoundException ex) {
+           return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+       }
+
+       @ExceptionHandler(Exception.class)
+       public ResponseEntity<String> handleGlobalException(Exception ex) {
+           return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+   }
+   ```
+
+   - The `@ControllerAdvice` annotated class handles exceptions for all controllers.
+   - It can catch specific exceptions like `UserNotFoundException`, and generic exceptions like `Exception`.
+
+### 3. **Using `ResponseStatusException` for Simpler Exception Handling**
+   You can throw `ResponseStatusException` directly in your controller or service methods to return specific HTTP status codes along with a custom error message.
+
+   **Example:**
+   ```java
+   @GetMapping("/users/{id}")
+   public User getUserById(@PathVariable Long id) {
+       return userService.findById(id)
+                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id: " + id));
+   }
+   ```
+
+   This approach eliminates the need for creating custom exceptions and `@ExceptionHandler` methods.
+
+### 4. **Custom Exceptions with `@ResponseStatus` Annotation**
+   You can define custom exceptions and annotate them with `@ResponseStatus` to automatically map the exception to a specific HTTP status code when thrown.
+
+   **Example:**
+   ```java
+   @ResponseStatus(HttpStatus.NOT_FOUND)
+   public class UserNotFoundException extends RuntimeException {
+       public UserNotFoundException(String message) {
+           super(message);
+       }
+   }
+   ```
+
+   - When `UserNotFoundException` is thrown, Spring automatically returns a `404 Not Found` response with the provided message.
+
+### 5. **Handling Validation Exceptions**
+   When using Spring's validation framework (`@Valid` or `@Validated`), you can catch and handle validation exceptions like `MethodArgumentNotValidException`.
+
+   **Example:**
+   ```java
+   @PostMapping("/users")
+   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+       return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+   }
+
+   @ControllerAdvice
+   public class ValidationExceptionHandler {
+
+       @ExceptionHandler(MethodArgumentNotValidException.class)
+       public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+           Map<String, String> errors = new HashMap<>();
+           ex.getBindingResult().getAllErrors().forEach(error -> {
+               String fieldName = ((FieldError) error).getField();
+               String errorMessage = error.getDefaultMessage();
+               errors.put(fieldName, errorMessage);
+           });
+           return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+       }
+   }
+   ```
+
+   - This example catches `MethodArgumentNotValidException`, which is thrown when a validation error occurs (e.g., when creating a new user), and returns a detailed error message for each invalid field.
+
+### 6. **Returning Custom Error Responses using `@ResponseBody`**
+   You can customize the error response body by returning a structured object instead of plain text.
+
+   **Example:**
+   ```java
+   @ExceptionHandler(UserNotFoundException.class)
+   @ResponseBody
+   public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
+       ErrorResponse error = new ErrorResponse();
+       error.setMessage(ex.getMessage());
+       error.setTimestamp(LocalDateTime.now());
+       error.setStatus(HttpStatus.NOT_FOUND.value());
+       return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+   }
+
+   public class ErrorResponse {
+       private String message;
+       private LocalDateTime timestamp;
+       private int status;
+
+       // getters and setters
+   }
+   ```
+
+   In this case, a custom `ErrorResponse` object is returned with detailed information like timestamp, status code, and error message.
+
+### 7. **Handling Exceptions in Filters and Interceptors**
+   Sometimes, exceptions might be thrown from filters or interceptors (which execute before or after controller methods). These exceptions can also be handled globally in `@ControllerAdvice`.
+
+   Alternatively, you can write custom error handling in the filter itself.
+
+   **Example:**
+   ```java
+   public class CustomFilter extends OncePerRequestFilter {
+   
+       @Override
+       protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+               throws ServletException, IOException {
+           try {
+               filterChain.doFilter(request, response);
+           } catch (Exception e) {
+               response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+               response.getWriter().write("An error occurred in the filter: " + e.getMessage());
+           }
+       }
+   }
+   ```
+
+### 8. **Handling Asynchronous Exceptions**
+   For exceptions thrown in asynchronous methods (`@Async`), Spring provides `AsyncUncaughtExceptionHandler` to manage uncaught exceptions.
+
+   **Example:**
+   ```java
+   @Configuration
+   public class AsyncConfig implements AsyncConfigurer {
+
+       @Override
+       public Executor getAsyncExecutor() {
+           return Executors.newCachedThreadPool();
+       }
+
+       @Override
+       public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+           return new CustomAsyncExceptionHandler();
+       }
+   }
+
+   public class CustomAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
+
+       @Override
+       public void handleUncaughtException(Throwable ex, Method method, Object... params) {
+           System.err.println("Exception in async method: " + ex.getMessage());
+       }
+   }
+   ```
+
+### 9. **Custom Error Pages**
+   You can define custom error pages by creating `error.html` in the `src/main/resources/templates/error` directory or by configuring the `ErrorController` interface.
+
+   **Example:**
+   ```java
+   @Controller
+   public class CustomErrorController implements ErrorController {
+
+       @RequestMapping("/error")
+       public String handleError() {
+           return "error-page";  // Returns a custom error view
+       }
+
+       @Override
+       public String getErrorPath() {
+           return "/error";
+       }
+   }
+   ```
+
+### Summary:
+- **@ExceptionHandler**: Handles exceptions in specific controllers.
+- **@ControllerAdvice**: Global exception handling for all controllers.
+- **ResponseStatusException**: Simplified exception handling with HTTP status codes.
+- **@ResponseStatus**: Custom exceptions with automatic HTTP status.
+- **Validation Exception Handling**: Handles validation errors.
+- **Custom Error Responses**: Structured error handling with detailed response bodies.
+- **Asynchronous Exception Handling**: Manage exceptions in `@Async` methods.
+
+These mechanisms together provide a robust and flexible way to manage errors in Spring Boot applications.
+
+Explain the concept of profiles in Spring Boot and how you can use them?
+========================================================================
+In Spring Boot, **profiles** are a mechanism to manage different configurations for different environments (such as development, testing, production, etc.). By using profiles, you can isolate environment-specific properties or beans and switch between them easily without changing the code.
+
+### Key Concepts of Profiles:
+1. **Environment-Specific Configuration**:
+   Profiles allow you to define different configurations for various environments. For example, you can have one set of database configurations for development and another for production.
+
+2. **Profile Activation**:
+   You can activate a profile when starting a Spring Boot application by specifying it in the environment or in the configuration files.
+
+3. **Profile-Specific Properties Files**:
+   Spring Boot can load different property files based on the active profile. For example:
+   - `application-dev.properties`: used in the development environment.
+   - `application-prod.properties`: used in the production environment.
+   The general `application.properties` is used as a fallback for any shared properties across all profiles.
+
+### How to Use Profiles in Spring Boot:
+
+1. **Profile-Specific Properties**:
+   You can create different properties files for each profile:
+   ```
+   src/main/resources/application-dev.properties
+   src/main/resources/application-prod.properties
+   ```
+   When you run the application with a specific profile, Spring Boot automatically loads the corresponding properties file.
+
+2. **Defining Profiles in Code**:
+   You can define beans that are specific to certain profiles by using the `@Profile` annotation in your Java classes. For example:
+   ```java
+   @Configuration
+   public class DataSourceConfig {
+       
+       @Bean
+       @Profile("dev")
+       public DataSource devDataSource() {
+           // return DataSource configured for development
+       }
+
+       @Bean
+       @Profile("prod")
+       public DataSource prodDataSource() {
+           // return DataSource configured for production
+       }
+   }
+   ```
+
+3. **Activating Profiles**:
+   - **Via Properties File**:
+     You can specify the active profile in the `application.properties` file:
+     ```properties
+     spring.profiles.active=dev
+     ```
+   - **Via Command Line**:
+     You can activate a profile when starting the application using the command line:
+     ```bash
+     java -jar myapp.jar --spring.profiles.active=prod
+     ```
+   - **Via Environment Variables**:
+     Set the environment variable before running the application:
+     ```bash
+     export SPRING_PROFILES_ACTIVE=prod
+     ```
+
+4. **Multiple Profiles**:
+   You can activate multiple profiles at once by separating them with commas:
+   ```properties
+   spring.profiles.active=dev,logging
+   ```
+
+5. **Default Profile**:
+   If no profile is explicitly activated, Spring Boot uses the default profile, which can be specified as:
+   ```properties
+   spring.profiles.default=dev
+   ```
+
+### Example Use Case:
+You have a Spring Boot application where you want different database configurations for development and production.
+
+**application-dev.properties**:
+```properties
+spring.datasource.url=jdbc:h2:mem:devdb
+spring.datasource.username=sa
+spring.datasource.password=
+```
+
+**application-prod.properties**:
+```properties
+spring.datasource.url=jdbc:mysql://prod-db-server/mydb
+spring.datasource.username=produser
+spring.datasource.password=securepassword
+```
+
+**Running the application in development**:
+```bash
+java -jar myapp.jar --spring.profiles.active=dev
+```
+
+By using profiles, you can seamlessly manage environment-specific configurations and isolate logic for different scenarios without changing the core application code.
+
+Why use Spring Boot over Spring Framework?
+==========================================
+Spring Boot is a framework built on top of the Spring Framework that simplifies the development of Spring applications by removing much of the boilerplate code and configuration required by traditional Spring applications. Here’s why you might choose Spring Boot over the Spring Framework:
+
+### 1. **Auto-Configuration**:
+   - **Spring Framework**: Requires significant manual configuration. You need to configure components like the data source, view resolvers, and security manually using XML or Java configuration classes.
+   - **Spring Boot**: Provides **auto-configuration**. It automatically configures many Spring components based on the libraries present on the classpath and sensible defaults. This allows you to start a new project quickly without manually specifying every configuration.
+
+   Example: If Spring Boot detects that you have a database driver in your project, it automatically configures a DataSource without needing to set it up manually.
+
+### 2. **Embedded Server**:
+   - **Spring Framework**: You need to deploy your application to an external servlet container like Tomcat or Jetty.
+   - **Spring Boot**: Comes with an **embedded server** (e.g., Tomcat, Jetty) out-of-the-box. You can run your application as a **standalone JAR** by simply executing it. This removes the need for traditional WAR packaging and external servers.
+
+   Example: You can start a Spring Boot application with the `java -jar` command and it will run the embedded Tomcat server automatically.
+
+### 3. **Convention over Configuration**:
+   - **Spring Framework**: Follows a "configuration first" approach, requiring you to configure most aspects of your application explicitly.
+   - **Spring Boot**: Follows a "convention over configuration" paradigm, where it provides default configurations that work in most situations, allowing you to focus more on writing business logic rather than configuration. If needed, you can still override these defaults.
+
+### 4. **Starter POMs**:
+   - **Spring Framework**: You have to manually specify dependencies for each Spring module, such as Spring MVC, Spring Data, etc.
+   - **Spring Boot**: Provides **starter POMs** (project object models) that bundle commonly used dependencies into a single dependency. For example, `spring-boot-starter-web` includes everything you need to build a web application (like Spring MVC, Jackson, and an embedded Tomcat server), reducing the need to manage individual dependencies manually.
+
+   Example: Instead of managing each dependency for a Spring MVC project, you just include:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-web</artifactId>
+   </dependency>
+   ```
+
+### 5. **Rapid Application Development**:
+   - **Spring Framework**: While powerful, it often requires a lot of configuration setup for even basic applications, which can slow down development.
+   - **Spring Boot**: Designed for **rapid application development**. With features like auto-configuration, embedded servers, and starter POMs, you can quickly prototype applications without worrying about detailed setup.
+
+### 6. **Built-in Production-Ready Features**:
+   - **Spring Framework**: Requires you to manually configure many production-level features such as monitoring, health checks, and metrics.
+   - **Spring Boot**: Includes **production-ready features** out-of-the-box through **Spring Boot Actuator**. Actuator provides endpoints for health checks, metrics, application info, and monitoring that can be easily integrated into your application.
+
+   Example: By adding Spring Boot Actuator, you can monitor your application’s health with no additional configuration:
+   ```xml
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-actuator</artifactId>
+   </dependency>
+   ```
+
+### 7. **Opinionated Defaults**:
+   - **Spring Framework**: Offers flexibility, but with flexibility comes complexity and the need for in-depth knowledge to make the right choices.
+   - **Spring Boot**: Provides **opinionated defaults** for most use cases, so developers can follow best practices without having to think about every detail. This makes it ideal for less experienced developers or for projects where you want to get started quickly.
+
+### 8. **Command-Line Interface (CLI)**:
+   - **Spring Framework**: Doesn’t have built-in support for CLI tools.
+   - **Spring Boot**: Provides a **Command-Line Interface (CLI)** for running and testing Spring Boot applications. You can use it to run Groovy scripts that can auto-wire Spring components without needing full project setup.
+
+   Example: You can write a Groovy script with Spring Boot CLI to quickly spin up a web app without complex setup.
+
+### 9. **Microservices Support**:
+   - **Spring Framework**: Supports building large-scale enterprise applications but requires more configuration and setup when building microservices.
+   - **Spring Boot**: Naturally suited for **microservices architecture** with features like embedded servers, lightweight packaging (JARs), and easy REST API creation. It also integrates well with cloud-native tools like Spring Cloud, which builds on top of Spring Boot to provide distributed system features like service discovery, circuit breakers, and configuration management.
+
+### 10. **Less Boilerplate Code**:
+   - **Spring Framework**: Tends to require more boilerplate code for common tasks, such as setting up data sources or security.
+   - **Spring Boot**: Reduces boilerplate code significantly with auto-configuration and starter dependencies, making your codebase cleaner and more maintainable.
+
+### When to Use Spring Boot:
+- When you want to quickly build a new application with minimal setup.
+- When you want to use microservices or cloud-native architectures.
+- When you need an embedded server and want to avoid deploying to an external server.
+- When you want to focus on writing business logic without worrying about configuration.
+
+### When to Use the Traditional Spring Framework:
+- When you need fine-grained control over every aspect of the application.
+- When you are working in a large, pre-existing project that uses traditional Spring configurations.
+- When you want to use a specific application server (e.g., deploying to an enterprise server like WebLogic or JBoss) instead of the embedded server.
+
+In summary, **Spring Boot simplifies development** by handling many common configuration and setup tasks for you, whereas **Spring Framework** offers more flexibility and control but requires more configuration and manual setup. For modern applications, especially microservices, Spring Boot is typically the preferred choice.
