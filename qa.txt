@@ -89,6 +89,11 @@ long uniqueCount = stringList.stream().distinct().count();
 
 9. Given a list of employees (with fields: name, age, salary), write a Java 8 Stream API code to find the employee with the highest salary.
 
+// Find the employee with the highest salary
+Employee highestSalaryEmployee = employees.stream()
+                                .max(Comparator.comparingDouble(Employee::getSalary))  // Compare based on salary
+                                .orElse(null);  // Handle case where list may be empty
+
 ==========================================================================================
 
 10. Write a Java 8 Stream API code to group a list of strings by their length.
@@ -121,16 +126,79 @@ List<Integer> oddNumbers = partitionedMap.get(false);
 
 13. Given a list of strings, write a Java 8 Stream API code to count the number of strings that contain the letter 'a'.
 
+List<String> stringList = Arrays.asList("faraz", "deepak", "deep", "faizan");
+
+stringList.stream().filter( str -> str.contains("a")).forEach(System.out::println);
+
 14. Write a Java 8 Stream API code to create a list of the squares of all numbers from 1 to 10.
+
+List<Integer> squares = IntStream.rangeClosed(1, 10) // Generate numbers from 1 to 10
+        .map(n -> n * n) // Square each number
+        .boxed() // Convert int to Integer
+        .collect(Collectors.toList()); // Collect into a list
+
+System.out.println(squares);
+
+Explanation:
+IntStream.rangeClosed(1, 10) generates a stream of integers from 1 to 10.
+.map(n -> n * n) squares each number.
+.boxed() converts each int to Integer, as the stream is currently primitive int.
+.collect(Collectors.toList()) collects the squared numbers into a List<Integer>.
+
 
 15. Given a list of integers, write a Java 8 Stream API code to remove duplicate elements.
 
+// Original list with duplicate elements
+List<Integer> numbersWithDuplicates = Arrays.asList(1, 2, 3, 2, 4, 3, 5, 1, 6, 5);
+
+// Using Stream API to remove duplicates
+List<Integer> distinctNumbers = numbersWithDuplicates.stream()
+                                .distinct() // Removes duplicate elements
+                                .collect(Collectors.toList()); // Collects the result into a new list
+
 16. Write a Java 8 Stream API code to collect all strings from a list that are longer than 3 characters into a new list.
+
+List<String> stringList = Arrays.asList("faraz", "deepak", "deep", "faizan", "swa");
+
+stringList.stream().filter(s -> s.length() > 3).collect(Collectors.toList()).forEach(System.out::println);
 
 17. Given a list of integers, write a Java 8 Stream API code to calculate the product of all numbers.
 
+List<Integer> values = Arrays.asList(1, 2, 3, 4, 5);
+int i = values.stream().reduce(1, (a, b) -> a * b).intValue();
+System.out.println(i);
+
 18. Write a Java 8 Stream API code to concatenate two lists of integers into a single list.
+
+List<Integer> list1 = Arrays.asList(1, 2, 3, 4);
+List<Integer> list2 = Arrays.asList(5, 6, 7, 8);
+
+// Concatenate two lists using Stream API
+List<Integer> concatenatedList = Stream.concat(list1.stream(), list2.stream())
+                                        .collect(Collectors.toList());
+
+System.out.println(concatenatedList);
 
 19. Given a list of employees (with fields: name, age, salary), write a Java 8 Stream API code to get a list of employees whose age is greater than 30.
 
+ List<Employee> employees = Arrays.asList(
+            new Employee("John", 25, 50000),
+            new Employee("Alice", 35, 60000),
+            new Employee("Bob", 40, 70000),
+            new Employee("David", 28, 45000),
+            new Employee("Eva", 32, 55000)
+        );
+
+// Filter employees whose age is greater than 30
+List<Employee> filteredEmployees = employees.stream()
+                                            .filter(emp -> emp.getAge() > 30)  // Filter condition
+                                            .collect(Collectors.toList());     // Collect into a list
+
+// Print filtered employees
+filteredEmployees.forEach(System.out::println);
+
 20. Write a Java 8 Stream API code to find the longest string in a list of strings.
+
+List<String> stringList = Arrays.asList("faraz", "deepak", "deep", "harshal", "swapnadeep");
+String longestString = stringList.stream().max(Comparator.comparingInt(String::length)).get();
+System.out.println(longestString);
