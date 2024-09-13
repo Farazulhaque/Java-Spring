@@ -1,0 +1,8 @@
+
+docker pull postgres
+docker run --name postgresql -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -p 5432:5432  -d postgres
+
+create database Testing
+create table users (id integer primary key, username text, password text)
+select * from users;
+insert into users values (1, 'faraz', 'f@123'), (2, 'deep', 'd@123')
