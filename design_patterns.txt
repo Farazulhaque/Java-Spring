@@ -440,3 +440,103 @@ If the **Inventory Service** fails, the orchestrator would:
 - **Orchestration-Based SAGA** is ideal for systems where centralized control and coordination are needed. It’s easier to manage and trace but can introduce a single point of failure and tight coupling.
 
 Choosing the right method depends on the specific requirements, such as the level of coupling, scalability, and complexity you’re willing to manage.
+
+========================
+Singleton Design Pattern
+========================
+The **Singleton Design Pattern** is a creational pattern that ensures a class has only **one instance** and provides a global point of access to that instance. It is commonly used when exactly one object is needed to coordinate actions across a system.
+
+### Key Concepts:
+1. **Single Instance:** Only one instance of the class is created, and this instance is shared across all parts of the application.
+2. **Global Access Point:** The instance is accessible globally through a static method, usually named `getInstance()`.
+
+### Why Use Singleton Pattern?
+- **Resource Management:** It’s useful when a single instance of a class is sufficient to handle tasks like logging, caching, configuration management, etc.
+- **Global State:** Ensures consistency across the application by providing a single source of truth.
+
+### Implementation Steps:
+1. **Private Constructor:** The constructor is made private to prevent the creation of new instances using the `new` keyword.
+2. **Static Instance Variable:** A private static variable holds the single instance of the class.
+3. **Static Method:** A public static method (`getInstance()`) returns the instance, creating it if it doesn’t exist.
+
+### Example (Thread-safe Singleton in Java):
+```java
+public class Singleton {
+    // Private static variable that holds the single instance of the class
+    private static Singleton instance;
+
+    // Private constructor to prevent instantiation
+    private Singleton() { }
+
+    // Public method to provide access to the instance
+    public static synchronized Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+
+    // Example method
+    public void showMessage(){
+       System.out.println("Hello from Singleton!");
+    }
+}
+```
+
+### Breakdown:
+- **Private Constructor:** Prevents the creation of the object from outside the class.
+- **Static Method (`getInstance()`):** Checks if the instance is `null`. If so, it creates the instance, otherwise, it returns the existing one.
+- **Thread Safety (with `synchronized`):** Ensures that only one thread can create the instance at a time.
+
+### Pros:
+- **Controlled Access:** Since only one instance is created, it ensures controlled access to a shared resource.
+- **Lazy Initialization:** The instance is created only when it is first needed.
+- **Reduced Memory Footprint:** Only one instance reduces memory usage.
+
+### Cons:
+- **Difficult to Test:** Singletons can make unit testing harder because the shared instance is difficult to isolate.
+- **Global State:** It introduces global state into an application, which can sometimes lead to issues with maintainability.
+
+### Variants:
+- **Eager Initialization:** The instance is created when the class is loaded, not lazily. This can be useful when the instance creation is lightweight.
+  
+    ```java
+    public class Singleton {
+        private static final Singleton instance = new Singleton();
+
+        private Singleton() { }
+
+        public static Singleton getInstance() {
+            return instance;
+        }
+    }
+    ```
+
+- **Double-checked Locking:** A more efficient thread-safe version to avoid the cost of synchronization once the instance is initialized.
+  
+    ```java
+    public class Singleton {
+        private static volatile Singleton instance;
+
+        private Singleton() { }
+
+        public static Singleton getInstance() {
+            if (instance == null) {
+                synchronized (Singleton.class) {
+                    if (instance == null) {
+                        instance = new Singleton();
+                    }
+                }
+            }
+            return instance;
+        }
+    }
+    ```
+
+### Use Cases:
+- **Logging systems**
+- **Database connections**
+- **Configuration settings**
+- **Cache management**
+
+The Singleton Pattern is highly useful in situations where you need to ensure that only one instance of a class exists, while also providing a global access point to that instance.

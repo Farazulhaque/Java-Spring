@@ -202,3 +202,5 @@ filteredEmployees.forEach(System.out::println);
 List<String> stringList = Arrays.asList("faraz", "deepak", "deep", "harshal", "swapnadeep");
 String longestString = stringList.stream().max(Comparator.comparingInt(String::length)).get();
 System.out.println(longestString);
+
+
