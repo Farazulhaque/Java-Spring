@@ -65,7 +65,7 @@ request
 session
 globalsession
 
-@Scaope annotation used with only @Component annotation -> Define scope of bean @Scope("prototype")
+@Scope annotation used with only @Component annotation -> Define scope of bean @Scope("prototype")
 
 @Configuration -> To handle the configuration using java
 @ComponentScan -> provide basePackages so that spring will scan that package and create the bean of any class that have @Component / @Bean annotation.
@@ -284,7 +284,7 @@ Spring Security is a powerful and flexible security framework that provides auth
 
 These core concepts form the foundation of Spring Security, allowing developers to build secure applications by addressing authentication, authorization, session management, and protection against common security threats.
 
-Authentication -> uthorization -> Principle -> Granted Authority -> Roles
+Authentication -> Authorization -> Principle -> Granted Authority -> Roles
 Role -> Group of authorities
 authorities -> Group of permissions
 

@@ -499,7 +499,7 @@ public class Singleton {
 
 ### Variants:
 - **Eager Initialization:** The instance is created when the class is loaded, not lazily. This can be useful when the instance creation is lightweight.
-  
+
     ```java
     public class Singleton {
         private static final Singleton instance = new Singleton();

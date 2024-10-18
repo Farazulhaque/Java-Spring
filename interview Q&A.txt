@@ -141,6 +141,9 @@ Once the application context is initialises, the run() method starts the applica
 TOP SPRING BOOT ANNOTATIONS
 ============================
 
+@Bean
+In Spring Boot, the @Bean annotation is used to declare a method as a bean definition that Spring will manage and create an instance of. Beans are objects that form the backbone of a Spring application and are managed by the Spring IoC (Inversion of Control) container.
+
 @SpringBootApplication: It combines three annotations: 
 @Configuration: ,
 -> Indicates that the class can be used by the Spring IoC container as a source of bean definitions
@@ -272,8 +275,29 @@ EXPLAIN SPRING BEAN LIFECYCLE
    4. Dependencies is injected.
    5. Destroyed when container is closed.
    
+In Spring Boot, the `@Bean` annotation is used to declare a method as a bean definition that Spring will manage and create an instance of. Beans are objects that form the backbone of a Spring application and are managed by the Spring IoC (Inversion of Control) container.
 
+When you annotate a method with `@Bean`, Spring will execute that method and register the return value as a bean in the Spring ApplicationContext. These beans are usually used to define configurations, dependencies, and other components in a Spring application.
 
+### Key Features of `@Bean`:
+1. **Custom Bean Creation**: It allows you to define your own bean creation logic for objects that are not automatically created by Spring.
+2. **Dependency Injection**: Beans can be automatically injected into other beans using annotations like `@Autowired`.
+3. **Scope Management**: You can specify the bean’s scope (`singleton`, `prototype`, etc.) using the `@Scope` annotation along with `@Bean`.
+4. **Initialization and Destruction Methods**: You can specify methods that should be called after the bean is created or before it is destroyed.
 
+### Example:
+```java
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MyService myService() {
+        return new MyServiceImpl();
+    }
+}
+```
+In this example, the method `myService()` is annotated with `@Bean`, meaning that Spring will create and manage an instance of `MyServiceImpl` and make it available as a bean in the application context.
+
+You typically use `@Bean` when you need fine control over how an object is instantiated or when third-party library components need to be integrated into your Spring-managed code.
 
 
