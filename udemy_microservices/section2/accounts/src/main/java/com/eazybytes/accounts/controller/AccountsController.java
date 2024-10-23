@@ -11,9 +11,10 @@ public class AccountsController {
      *
      * @return a string representing the accounts information
      */
-    @GetMapping("/accounts")
+    @GetMapping("/sayHello")
     public String getAccounts() {
-        return "Accounts";
+        System.out.println("Hello World");
+        return "Hello World";
     }
 
 }
