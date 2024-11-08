@@ -1,0 +1,7 @@
+mvn spring-boot:build-image
+
+docker run -d -p 8090:8090 farazhaq/loans:s4
+
+mvn compile jib:dockerBuild
+
+docker image push docker.io/farazhaq/cards:s4
