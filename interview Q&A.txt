@@ -301,3 +301,407 @@ In this example, the method `myService()` is annotated with `@Bean`, meaning tha
 You typically use `@Bean` when you need fine control over how an object is instantiated or when third-party library components need to be integrated into your Spring-managed code.
 
 
+===========================
+INTERNAL WORKING OF HASHMAP
+===========================
+A **HashMap** in Java is a widely used data structure that stores key-value pairs and provides efficient operations for insertion, deletion, and lookup. Here's a detailed explanation of how it works:
+
+---
+
+### 1. **Basics of HashMap**
+- **Key-Value Pair**: Data is stored as a combination of a unique key and its corresponding value.
+- **Hashing**: The key is processed through a hash function to calculate a hash code, which determines the index in the underlying data structure.
+- **Underlying Data Structure**: Internally, a HashMap uses an **array of buckets** where each bucket holds a linked list (or a tree for optimization).
+
+---
+
+### 2. **Internal Structure**
+- **Bucket**: A bucket is a storage location in the array where entries with the same hash code can be stored. Initially, the array size is `16`.
+- **Entry**: Each bucket stores objects of type `Map.Entry`, which contain:
+  - `key`
+  - `value`
+  - `hash` (hash code of the key)
+  - `next` (reference to the next entry in case of collision)
+
+---
+
+### 3. **Operations**
+
+#### a. **Put (Insertion)**
+When you add a key-value pair using `put(key, value)`:
+1. **Hash Code Calculation**:
+   - A hash function is applied to the key to compute the hash code. 
+   - The hash code is further compressed to find the index in the array:  
+     `index = (n - 1) & hash` (where `n` is the size of the array).
+
+2. **Bucket Selection**:
+   - The computed index determines the bucket.
+
+3. **Collision Handling**:
+   - If no entry exists at the bucket, the new entry is added.
+   - If an entry already exists, a collision occurs:
+     - Java 8+: Uses a linked list initially. If the list becomes too long (threshold = 8), it is converted to a balanced tree (Red-Black Tree) for better performance.
+     - Previous versions: Used only linked lists, causing performance degradation for many collisions.
+
+4. **Overwrite**:
+   - If the same key already exists, the old value is replaced with the new value.
+
+---
+
+#### b. **Get (Lookup)**
+When you fetch a value using `get(key)`:
+1. **Hash Code Calculation**:
+   - The key's hash code is calculated to determine the bucket index.
+
+2. **Bucket Search**:
+   - The bucket is searched sequentially (or in the tree if a tree structure is used) for the entry with the matching key.
+   - If found, the corresponding value is returned.
+
+3. **Time Complexity**:
+   - Average case: \(O(1)\) for lookup (thanks to hashing and low collision rates).
+   - Worst case: \(O(n)\) (if all keys hash to the same bucket, degrading to a linked list).
+
+---
+
+#### c. **Remove (Deletion)**
+When you remove an entry using `remove(key)`:
+1. **Hash Code Calculation**:
+   - The key's hash code is calculated to find the bucket index.
+
+2. **Bucket Update**:
+   - The bucket is searched for the key.
+   - The entry is removed by updating the linked list/tree structure.
+
+---
+
+### 4. **Key Points**
+- **Load Factor**:
+  - Determines how full the HashMap can be before resizing (default: 0.75).
+  - When the size exceeds `capacity * loadFactor`, the HashMap resizes (doubles the bucket array size) and rehashes all entries.
+
+- **Hash Collision**:
+  - Happens when two keys generate the same hash code.
+  - Handled using separate chaining (linked list/tree) or open addressing (not used in `HashMap`).
+
+- **Performance**:
+  - \(O(1)\) average time for `put()`, `get()`, and `remove()`.
+  - \(O(n)\) in the worst case (many collisions).
+
+---
+
+### 5. **Example Code**
+```java
+import java.util.HashMap;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        // Creating a HashMap
+        HashMap<Integer, String> map = new HashMap<>();
+
+        // Adding elements
+        map.put(1, "One");
+        map.put(2, "Two");
+        map.put(3, "Three");
+
+        // Fetching a value
+        System.out.println("Value for key 2: " + map.get(2)); // Output: Two
+
+        // Removing a key
+        map.remove(1);
+
+        // Iterating over the HashMap
+        for (Integer key : map.keySet()) {
+            System.out.println("Key: " + key + ", Value: " + map.get(key));
+        }
+    }
+}
+```
+
+---
+
+### 6. **Improvements in Java 8**
+- **Treeify Buckets**:
+  - Buckets use trees instead of linked lists when the chain length exceeds 8, reducing worst-case lookup time to \(O(\log n)\).
+- **Hash Function**:
+  - Improved hashing to reduce collision chances, enhancing performance.
+
+---
+
+### Summary
+A **HashMap** is fast and efficient due to its hashing mechanism, but its performance depends on factors like the quality of the hash function, load factor, and collision handling mechanism.
+
+======================
+ANONYMOUS INNER CLASS
+======================
+
+An **anonymous inner class** in Java is a type of inner class (a class defined within another class) that does not have a name. It is used to define and instantiate a class at the same time. Typically, it is used to create an object with a slight modification of an existing class or interface, without creating a separate named subclass.
+
+### Syntax:
+An anonymous inner class is defined and instantiated in a single statement using the `new` keyword.
+
+### Key Features:
+1. **No Name:** It has no name, so it cannot be reused elsewhere in the code.
+2. **Extends or Implements:** It either extends a class or implements an interface, but not both at the same time.
+3. **Single Use:** It is usually used for short tasks, such as defining event handlers, callbacks, or one-off implementations.
+
+### Common Usage:
+1. **Extending a Class:**
+
+```java
+class Animal {
+    void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal dog = new Animal() {
+            @Override
+            void makeSound() {
+                System.out.println("Dog barks");
+            }
+        };
+        dog.makeSound(); // Output: Dog barks
+    }
+}
+```
+
+2. **Implementing an Interface:**
+
+```java
+interface Greeting {
+    void sayHello();
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Greeting greet = new Greeting() {
+            @Override
+            public void sayHello() {
+                System.out.println("Hello, World!");
+            }
+        };
+        greet.sayHello(); // Output: Hello, World!
+    }
+}
+```
+
+3. **Using in Event Handling:**
+
+```java
+import javax.swing.*;
+import java.awt.event.*;
+
+public class Main {
+    public static void main(String[] args) {
+        JButton button = new JButton("Click Me");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Button clicked!");
+            }
+        });
+    }
+}
+```
+
+### Benefits:
+- **Concise:** Reduces boilerplate code.
+- **Encapsulation:** The class is only used in the context where it is created.
+- **Flexibility:** Easily override methods for specific use cases.
+
+### Limitations:
+1. **No Name:** Cannot be reused outside its scope.
+2. **Complexity:** Overuse can make code harder to read and maintain.
+3. **Single Instance:** Designed for one-time use only.
+
+Anonymous inner classes are a powerful feature in Java, particularly useful for quick and specific customizations of classes or interfaces.
+
+### **What is the difference between ArrayList and LinkedList in Java?**
+
+#### **Key Differences Between ArrayList and LinkedList**
+
+| Feature                     | **ArrayList**                                                                 | **LinkedList**                                                                 |
+|-----------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| **Underlying Data Structure** | Uses a **dynamic array** to store elements.                                    | Uses a **doubly linked list** to store elements.                              |
+| **Access Time**              | Fast random access due to index-based access (`O(1)` for `get()` and `set()`). | Sequential access; slower random access (`O(n)` for `get()` and `set()`).     |
+| **Insertion/Deletion**       | Slower for insertion/deletion in the middle (`O(n)`), as it requires shifting elements. | Faster for insertion/deletion in the middle (`O(1)`), no shifting required.   |
+| **Memory Usage**             | Requires less memory overhead.                                                | Requires more memory due to storing node pointers (next and previous).        |
+| **Iterating Elements**       | Faster for simple iteration due to contiguous memory storage.                  | Slightly slower for iteration due to pointer chasing in the linked structure. |
+| **Best Use Case**            | Best when frequent access or modification of elements is needed.               | Best when frequent insertions and deletions occur.                            |
+| **Implementation**           | Part of the `java.util` package, backed by an array.                          | Part of the `java.util` package, backed by a doubly linked list.              |
+
+#### **When to Use Which?**
+- **Use ArrayList** if your application involves **frequent read operations** and less modification (e.g., accessing elements by index).
+- **Use LinkedList** if your application involves **frequent insertions and deletions**, especially in the middle of the list.
+
+### **What is the difference between ConcurrentHashMap and HashMap in Java?**
+
+#### **Key Differences Between ConcurrentHashMap and HashMap**
+
+| Feature                      | **HashMap**                                                                                   | **ConcurrentHashMap**                                                                            |
+|------------------------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| **Thread Safety**            | Not thread-safe. Needs external synchronization for thread-safe operations.                   | Thread-safe. Designed for concurrent access by multiple threads without the need for external synchronization. |
+| **Concurrency Level**        | Does not support concurrent modifications by multiple threads.                                | Allows concurrent modifications by multiple threads with minimal performance impact.           |
+| **Null Keys/Values**         | Allows one `null` key and multiple `null` values.                                             | Does not allow `null` keys or `null` values.                                                   |
+| **Performance**              | Faster for single-threaded operations due to no synchronization overhead.                     | Slower than HashMap in a single-threaded context due to internal synchronization.              |
+| **Synchronization Mechanism**| No built-in synchronization.                                                                  | Uses **segment locking** (in older versions) or a highly optimized lock-free mechanism (Java 8 and later). |
+| **Iteration During Modification** | Not fail-safe; `ConcurrentModificationException` may occur if modified during iteration. | Fail-safe to an extent; reflects changes made by other threads during iteration.               |
+| **Use Case**                 | Best for single-threaded applications or when synchronization is managed externally.          | Best for multi-threaded applications requiring high concurrency with thread safety.            |
+
+#### **When to Use Which?**
+- **Use HashMap** in **single-threaded applications** or when external synchronization (like `synchronized` blocks) can be safely applied.
+- **Use ConcurrentHashMap** in **multi-threaded applications** where multiple threads access and modify the map concurrently, and you need built-in thread safety with good performance.
+
+
+### **Intermediate-Level Java Interview Questions and Answers**
+
+#### **1. What is the difference between `final`, `finally`, and `finalize()` in Java?**
+- **`final`**: 
+  - A keyword used to declare constants, prevent method overriding, or inheritance.
+  - Examples: 
+    ```java
+    final int x = 10; // Constant
+    final class MyClass {} // Cannot be subclassed
+    ```
+- **`finally`**: 
+  - A block used in exception handling to execute code regardless of an exception being thrown.
+  - Example: 
+    ```java
+    try {
+        int data = 10 / 0;
+    } catch (ArithmeticException e) {
+        System.out.println("Exception caught");
+    } finally {
+        System.out.println("Finally block executed");
+    }
+    ```
+- **`finalize()`**: 
+  - A method in the `Object` class used for cleanup before an object is garbage collected. Rarely used.
+  - Example: 
+    ```java
+    @Override
+    protected void finalize() throws Throwable {
+        System.out.println("Object is being garbage collected");
+    }
+    ```
+
+---
+
+#### **2. How does `HashMap` work internally in Java?**
+- **Internal Structure**:
+  - Uses a combination of an **array** and **linked list** (or **tree** since Java 8) for storing key-value pairs.
+  - Keys are hashed to determine the index in the internal array.
+- **Process**:
+  - **Put** operation: 
+    - Computes the hashcode of the key, determines the bucket index, and stores the entry.
+    - If a collision occurs, entries are linked in a list or converted to a tree.
+  - **Get** operation:
+    - Computes the hashcode of the key, navigates to the bucket, and compares keys using `equals()` to retrieve the value.
+
+---
+
+#### **3. What is the difference between `ArrayList` and `Vector`?**
+| Feature              | **ArrayList**                                      | **Vector**                                       |
+|----------------------|---------------------------------------------------|-------------------------------------------------|
+| **Thread Safety**     | Not thread-safe. Needs external synchronization.  | Thread-safe. All methods are synchronized.      |
+| **Performance**       | Faster, no synchronization overhead.              | Slower due to synchronization overhead.         |
+| **Growth Mechanism**  | Increases by 50% when full.                       | Doubles its size when full.                     |
+| **Use Case**          | Best for single-threaded applications.            | Best for multi-threaded applications (legacy).  |
+
+---
+
+#### **4. What is the difference between `abstract` class and `interface` in Java?**
+| Feature                  | **Abstract Class**                                     | **Interface**                                                 |
+|--------------------------|-------------------------------------------------------|--------------------------------------------------------------|
+| **Purpose**               | Used to provide partial abstraction and base class.   | Used to achieve full abstraction and define contracts.        |
+| **Methods**               | Can have abstract and concrete methods.              | All methods are abstract (Java 7). Default and static methods (Java 8+). |
+| **Fields**                | Can have instance variables.                         | Can only have `public static final` constants.                |
+| **Inheritance**           | Supports single inheritance.                         | Supports multiple inheritance.                                |
+| **Use Case**              | Use when a class shares a common base behavior.       | Use to define a contract for unrelated classes.               |
+
+---
+
+#### **5. Explain `volatile` and `synchronized` keywords.**
+- **`volatile`**:
+  - Ensures that changes to a variable are immediately visible to all threads.
+  - Prevents the compiler and JVM from caching the variable.
+  - Example:
+    ```java
+    private volatile boolean flag = true;
+    ```
+- **`synchronized`**:
+  - Ensures mutual exclusion, allowing only one thread to access a block or method at a time.
+  - Can synchronize methods or blocks.
+  - Example:
+    ```java
+    synchronized void increment() {
+        count++;
+    }
+    ```
+
+---
+
+#### **6. What is the difference between `String`, `StringBuilder`, and `StringBuffer`?**
+| Feature              | **String**                      | **StringBuilder**                  | **StringBuffer**                  |
+|----------------------|----------------------------------|------------------------------------|-----------------------------------|
+| **Mutability**        | Immutable                      | Mutable                           | Mutable                          |
+| **Thread Safety**     | Not thread-safe                | Not thread-safe                   | Thread-safe                      |
+| **Performance**       | Slower for modifications       | Faster than `StringBuffer`         | Slower due to synchronization    |
+| **Use Case**          | For fixed or unchanging data.  | For single-threaded scenarios.    | For multi-threaded scenarios.    |
+
+---
+
+#### **7. What is the difference between `Comparable` and `Comparator`?**
+| Feature               | **Comparable**                      | **Comparator**                        |
+|-----------------------|-------------------------------------|---------------------------------------|
+| **Package**            | `java.lang`                       | `java.util`                          |
+| **Sorting Logic**      | Natural ordering (implemented within the object). | Custom ordering (defined externally). |
+| **Method**             | `compareTo(Object o)`             | `compare(Object o1, Object o2)`      |
+| **Usage**              | Implemented by the class being sorted. | Implemented as a separate class.      |
+| **Example**            | Sorting by a single property.      | Sorting by multiple properties.       |
+
+---
+
+#### **8. Explain the working of a `ThreadPoolExecutor`.**
+- **Definition**: A `ThreadPoolExecutor` manages a pool of worker threads, reusing them to execute tasks efficiently.
+- **Core Concepts**:
+  - **Core Pool Size**: Minimum number of threads to keep alive.
+  - **Maximum Pool Size**: Maximum number of threads allowed.
+  - **Queue**: Holds tasks waiting to be executed.
+  - **Rejection Policy**: Determines what happens when the queue is full.
+- **Example**:
+  ```java
+  ExecutorService executor = new ThreadPoolExecutor(2, 5, 1, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
+  executor.execute(() -> System.out.println("Task executed"));
+  executor.shutdown();
+  ```
+
+---
+
+#### **9. How does `Garbage Collection` work in Java?**
+- **Purpose**: Reclaims memory occupied by objects that are no longer reachable.
+- **Steps**:
+  1. **Mark**: Identifies objects that are reachable.
+  2. **Sweep**: Reclaims memory occupied by unreachable objects.
+- **Garbage Collectors**:
+  - **Serial GC**: Single-threaded collector.
+  - **Parallel GC**: Multi-threaded collector.
+  - **G1 GC**: Low-latency garbage collector.
+  - **ZGC/Shenandoah**: Ultra-low-latency collectors (Java 11+).
+- **Triggers**:
+  - JVM decides when to invoke GC based on memory pressure.
+
+---
+
+#### **10. What is the difference between `Checked` and `Unchecked` exceptions?**
+| Feature                   | **Checked Exception**                       | **Unchecked Exception**                     |
+|---------------------------|---------------------------------------------|---------------------------------------------|
+| **Definition**             | Exceptions checked at compile time.        | Exceptions checked at runtime.              |
+| **Examples**               | `IOException`, `SQLException`.             | `NullPointerException`, `ArithmeticException`. |
+| **Handling**               | Must be declared or handled using `try-catch`. | Optional to handle.                         |
+
+--- 
+
+These questions cover both conceptual and practical aspects of intermediate Java programming, helping candidates demonstrate their understanding of Java’s core and advanced features.
