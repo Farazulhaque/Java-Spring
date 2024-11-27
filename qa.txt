@@ -203,4 +203,12 @@ List<String> stringList = Arrays.asList("faraz", "deepak", "deep", "harshal", "s
 String longestString = stringList.stream().max(Comparator.comparingInt(String::length)).get();
 System.out.println(longestString);
 
+21. How can you count the frequency of words from a list in Java?
+
+List<String> words = Arrays.asList("hello", "world", "hello", "java", "stream", "stream", "API", "is", "powerful");
+// Use Map.merge() to count frequencies
+Map<String, Long> wordFrequencies = new HashMap<>();
+words.forEach(word -> wordFrequencies.merge(word, 1L, Long::sum));
+// Print the word frequencies
+wordFrequencies.forEach((word, count) -> System.out.println(word + ": " + count));
 
