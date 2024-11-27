@@ -540,3 +540,120 @@ public class Singleton {
 - **Cache management**
 
 The Singleton Pattern is highly useful in situations where you need to ensure that only one instance of a class exists, while also providing a global access point to that instance.
+
+
+===============================
+Circuit Breaker Design Pattern
+===============================
+
+The **Circuit Breaker** design pattern is a resilience pattern used in software development to handle failures gracefully and prevent cascading failures in a distributed system. It is commonly implemented in microservices architectures, where services often depend on external systems such as databases, APIs, or other services.
+
+---
+
+### **Purpose**
+The Circuit Breaker pattern helps:
+1. **Prevent service overload:** Stops excessive requests to failing components, allowing them to recover.
+2. **Improve fault tolerance:** Quickly detect failures and prevent downstream system degradation.
+3. **Ensure responsiveness:** Avoid waiting for timeouts by failing fast when the circuit is open.
+
+---
+
+### **Key Concepts**
+The pattern acts as a switch with three states:
+
+1. **Closed State (Normal Operation):**
+   - Requests flow normally.
+   - The Circuit Breaker monitors failures.
+   - If failures reach a threshold, the breaker trips and moves to the **Open State**.
+
+2. **Open State (Failure Detected):**
+   - Requests are blocked immediately, and an error is returned to the caller.
+   - This prevents further load on the failing service.
+   - A timer is set to move the breaker into the **Half-Open State** after some time.
+
+3. **Half-Open State (Trial State):**
+   - Some requests are allowed to pass as a test.
+   - If the requests succeed, the breaker moves back to the **Closed State**.
+   - If they fail, it returns to the **Open State**.
+
+---
+
+### **How It Works**
+1. **Monitoring:**
+   - The Circuit Breaker counts the number of failed requests or monitors response time.
+   - Failure thresholds and time windows are configurable.
+
+2. **Fail Fast:**
+   - When the Circuit Breaker is open, calls fail immediately instead of waiting for timeouts.
+
+3. **Recovery:**
+   - The system periodically tests if the external service has recovered and resumes normal operation if successful.
+
+---
+
+### **When to Use**
+- To protect services from overloading when dependent services fail.
+- To handle unpredictable latency or failures in external systems.
+- To improve the resilience of distributed systems and maintain service responsiveness.
+
+---
+
+### **Real-World Example**
+#### Online Payment System
+- A payment service communicates with multiple external payment gateways.
+- If a gateway becomes unresponsive or starts failing, the Circuit Breaker trips.
+- While the breaker is open, requests to the failing gateway are blocked, and fallback mechanisms (e.g., alternate gateways) are used.
+- After a cooling-off period, the Circuit Breaker tests the gateway and resumes normal operation if the gateway recovers.
+
+---
+
+### **Implementation**
+Many frameworks provide Circuit Breaker implementations, such as:
+- **Netflix Hystrix**: A popular library for Java.
+- **Resilience4j**: Lightweight and flexible for Java.
+- **Polly**: Circuit Breaker library for .NET.
+- **Spring Cloud Circuit Breaker**: Built-in support for Circuit Breaker patterns using libraries like Resilience4j.
+
+---
+
+### **Example Using Resilience4j in Spring Boot**
+```java
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class PaymentController {
+
+    @GetMapping("/processPayment")
+    @CircuitBreaker(name = "paymentService", fallbackMethod = "fallbackPayment")
+    public String processPayment() {
+        // Simulate an external call
+        if (Math.random() > 0.5) {
+            throw new RuntimeException("Payment service is down");
+        }
+        return "Payment processed successfully!";
+    }
+
+    public String fallbackPayment(Throwable t) {
+        return "Payment service is currently unavailable. Please try again later.";
+    }
+}
+```
+
+---
+
+### **Benefits**
+- Increases system robustness and fault tolerance.
+- Avoids cascading failures in distributed systems.
+- Enhances user experience by returning fallback responses instead of waiting for timeouts.
+
+---
+
+### **Drawbacks**
+- Adds complexity to the system.
+- Requires proper configuration and testing to avoid unintended consequences, such as premature circuit opening or staying open too long.
+
+---
+
+The Circuit Breaker pattern is a powerful tool for building resilient systems, especially in environments with high interdependencies and potential for failures.

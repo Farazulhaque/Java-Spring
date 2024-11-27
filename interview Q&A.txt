@@ -662,6 +662,192 @@ Anonymous inner classes are a powerful feature in Java, particularly useful for 
 | **Usage**              | Implemented by the class being sorted. | Implemented as a separate class.      |
 | **Example**            | Sorting by a single property.      | Sorting by multiple properties.       |
 
+In Java, both `Comparable` and `Comparator` are interfaces used to compare objects and determine their natural order, typically for sorting. However, they serve different purposes and are used in distinct scenarios.
+
+---
+
+### **1. `Comparable` Interface**
+
+The `Comparable` interface is used to define the natural ordering of objects of a class. A class implements this interface to specify how its instances should be compared.
+
+#### **Key Features**
+- Defined in `java.lang`.
+- Has a single method: 
+  ```java
+  int compareTo(T o);
+  ```
+- Used to define a class's **default or natural ordering**.
+
+#### **Example**
+```java
+import java.util.*;
+
+class Student implements Comparable<Student> {
+    private int id;
+    private String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int compareTo(Student other) {
+        // Natural order by ID
+        return this.id - other.id;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{id=" + id + ", name='" + name + "'}";
+    }
+}
+
+public class ComparableExample {
+    public static void main(String[] args) {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(3, "Alice"));
+        students.add(new Student(1, "Bob"));
+        students.add(new Student(2, "Charlie"));
+
+        Collections.sort(students);
+
+        System.out.println("Sorted by ID:");
+        for (Student student : students) {
+            System.out.println(student);
+        }
+    }
+}
+```
+
+#### **Output**
+```
+Sorted by ID:
+Student{id=1, name='Bob'}
+Student{id=2, name='Charlie'}
+Student{id=3, name='Alice'}
+```
+
+---
+
+### **2. `Comparator` Interface**
+
+The `Comparator` interface is used to define custom sorting logic, independent of the class's natural order.
+
+#### **Key Features**
+- Defined in `java.util`.
+- Has two main methods (Java 8+ supports lambda expressions for concise implementation):
+  ```java
+  int compare(T o1, T o2);
+  boolean equals(Object obj); // Optional
+  ```
+- Can create **multiple sorting logics** for a class.
+
+#### **Example**
+```java
+import java.util.*;
+
+class Student {
+    private int id;
+    private String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{id=" + id + ", name='" + name + "'}";
+    }
+}
+
+class NameComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return s1.getName().compareTo(s2.getName());
+    }
+}
+
+public class ComparatorExample {
+    public static void main(String[] args) {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(3, "Alice"));
+        students.add(new Student(1, "Bob"));
+        students.add(new Student(2, "Charlie"));
+
+        // Sort by Name using NameComparator
+        Collections.sort(students, new NameComparator());
+
+        System.out.println("Sorted by Name:");
+        for (Student student : students) {
+            System.out.println(student);
+        }
+    }
+}
+```
+
+#### **Output**
+```
+Sorted by Name:
+Student{id=3, name='Alice'}
+Student{id=1, name='Bob'}
+Student{id=2, name='Charlie'}
+```
+
+---
+
+### **Differences Between `Comparable` and `Comparator`**
+
+| Feature               | `Comparable`                            | `Comparator`                           |
+|-----------------------|------------------------------------------|----------------------------------------|
+| **Purpose**           | Natural ordering of class objects.       | Custom ordering of class objects.      |
+| **Location**          | Implemented in the class itself.         | Defined in a separate class or inline. |
+| **Method**            | `compareTo(Object o)`                   | `compare(Object o1, Object o2)`        |
+| **Single/Multiple**   | Only one sorting logic per class.         | Allows multiple sorting logics.        |
+| **Usage**             | Implements `Comparable` interface.       | Implements `Comparator` interface.     |
+
+---
+
+### **When to Use**
+
+- Use `Comparable` if:
+  - A single, natural order is enough.
+  - The comparison logic is intrinsic to the object (e.g., ordering students by ID).
+
+- Use `Comparator` if:
+  - Different sorting criteria are required (e.g., sorting students by name, then by ID).
+  - The class can't be modified (e.g., you want to sort `String` objects by length).
+
+---
+
+### **Java 8 Enhancements**
+With Java 8, you can use lambda expressions to simplify `Comparator` usage:
+```java
+students.sort((s1, s2) -> s1.getName().compareTo(s2.getName()));
+```
+
+Or use built-in methods like `Comparator.comparing`:
+```java
+students.sort(Comparator.comparing(Student::getName));
+```
+
 ---
 
 #### **8. Explain the working of a `ThreadPoolExecutor`.**
