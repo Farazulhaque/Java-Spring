@@ -91,7 +91,7 @@
                 <version>3.4.2</version>
                 <configuration>
                     <to>
-                        <image>farazhaq/${project.artifactId}:s9</image>
+                        <image>farazhaq/${project.artifactId}:s10</image>
                     </to>
                 </configuration>
             </plugin>
